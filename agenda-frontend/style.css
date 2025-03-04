@@ -1,0 +1,94 @@
+/* Estilos Gerais */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+/* Título */
+h1, h2 {
+    color: #333;
+}
+
+/* Formulário */
+#form-container {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"], input[type="email"], button {
+    padding: 10px;
+    margin: 5px;
+    width: 80%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Lista de Contatos */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background-color: white;
+    padding: 15px;
+    margin: 10px auto;
+    width: 60%;
+    border-radius: 8px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Estilo do texto de cada contato */
+.contact-info {
+    text-align: left;
+}
+
+.contact-info strong {
+    font-size: 18px;
+    color: #333;
+}
+
+.contact-info span {
+    font-size: 16px;
+    color: #666;
+}
+
+/* Botões para Editar e Excluir */
+button.edit-btn, button.delete-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button.edit-btn {
+    background-color: #f0ad4e;
+    color: white;
+}
+
+button.delete-btn {
+    background-color: #d9534f;
+    color: white;
+}
+
+button:hover {
+    opacity: 0.8;
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda de Contatos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Agenda de Contatos</h1>
+
+    <!-- Formulário para adicionar um novo contato -->
+    <div id="form-container">
+        <h2>Adicionar Contato</h2>
+        <form id="form-contato">
+            <input type="text" id="nome" placeholder="Nome" required>
+            <input type="text" id="sobrenome" placeholder="Sobrenome" required>
+            <input type="text" id="numero" placeholder="Número" required>
+            <input type="email" id="email" placeholder="E-mail" required>
+            <input type="text" id="foto" placeholder="URL da Foto" required>
+            <button type="submit">Adicionar</button>
+        </form>
+    </div>
+
+    <!-- Lista de Contatos -->
+    <h2>Contatos</h2>
+    <ul id="lista-contatos"></ul>
+
+    <!-- Script externo -->
+    <script src="script.js"></script>
+</body>
+</html>
