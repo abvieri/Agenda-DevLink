@@ -2,15 +2,15 @@ const mysql = require('mysql2/promise');
 
 // Configuração de conexão
 const connection = mysql.createPool({
-  host: 'localhost', // Pode ser o host do seu banco, como localhost ou IP remoto
-  user: 'root', // Seu nome de usuário no MySQL
-  password: '123456', // Sua senha
-  database: 'agendacontatos', // Nome do banco de dados
-  port: 3307, // Porta correta
+  host: 'ldpg-cur29h5ds78s7384etr0-a',
+  user: 'crudpython_ejl8_user',
+  password: 'YwD8vhsb6UdkNUHncZPG9HjgRxZjoHjm',
+  database: 'crudpython_ejl8', 
+  port: 5432,
   waitForConnections: true, // Permite que as conexões aguardem no pool
   connectionLimit: 10, // Limite de conexões simultâneas
   queueLimit: 0 // Limite de requisições em fila
-});
+}); 
 
 // Função para testar a conexão
 async function testConnection() {
