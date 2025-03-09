@@ -1,15 +1,20 @@
 const mysql = require('mysql2/promise');
 
 // Configuração de conexão
-const connection = mysql.createPool({
-  host: 'localhost', // Pode ser o host do seu banco, como localhost ou IP remoto
-  user: 'root', // Seu nome de usuário no MySQL
-  password: '123456', // Sua senha
-  database: 'agendacontatos', // Nome do banco de dados
-  port: 3307, // Porta correta
+const connection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT || 3306,
   waitForConnections: true, // Permite que as conexões aguardem no pool
   connectionLimit: 10, // Limite de conexões simultâneas
   queueLimit: 0 // Limite de requisições em fila
+});
+
+connection.connect((err) => {
+  if (err) throw err;
+  console.log('Conectado ao banco de dados MySQL!');
 });
 
 // Função para testar a conexão
