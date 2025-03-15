@@ -16,9 +16,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     const contactInfo = document.createElement("div");
                     contactInfo.classList.add("contact-info");
                     contactInfo.innerHTML = `
-                        <strong>${contato.nome} ${contato.sobrenome}</strong><br>
-                        <span>${contato.numero}</span><br>
-                        <span>${contato.email}</span>
+                        <div class="contact-card">
+                            <img src="./img/Perfil.png" alt="Foto de ${contato.nome}" class="contact-img">
+                            <h3>${contato.nome}</h3>
+                            <p><img src="./img/iconPhone.svg" alt=""> ${contato.numero}</p>
+                            <p><img src="./img/cartinha_email_icone.svg" alt=""> ${contato.email}</p>
+                        </div>
                     `;
 
                     // Botões para editar e excluir
@@ -33,8 +36,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     deleteButton.onclick = () => excluirContato(contato.id);
 
                     li.appendChild(contactInfo);
-                    li.appendChild(editButton);
-                    li.appendChild(deleteButton);
+                    // li.appendChild(editButton);
+                    // li.appendChild(deleteButton);
                     listaContatos.appendChild(li);
                 });
             })
@@ -59,12 +62,12 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             body: JSON.stringify(novoContato)
         })
-        .then(response => response.json())
-        .then(() => {
-            carregarContatos();
-            form.reset();
-        })
-        .catch(error => console.error("Erro ao adicionar contato:", error));
+            .then(response => response.json())
+            .then(() => {
+                carregarContatos();
+                form.reset();
+            })
+            .catch(error => console.error("Erro ao adicionar contato:", error));
     });
 
     // Função para editar um contato
@@ -81,9 +84,9 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             body: JSON.stringify({ nome, sobrenome, numero, email })
         })
-        .then(response => response.json())
-        .then(() => carregarContatos())
-        .catch(error => console.error("Erro ao editar contato:", error));
+            .then(response => response.json())
+            .then(() => carregarContatos())
+            .catch(error => console.error("Erro ao editar contato:", error));
     }
 
     // Função para excluir um contato
@@ -92,11 +95,45 @@ document.addEventListener("DOMContentLoaded", function () {
             fetch(`http://localhost:3000/contatos/${id}`, {
                 method: "DELETE"
             })
-            .then(() => carregarContatos())
-            .catch(error => console.error("Erro ao excluir contato:", error));
+                .then(() => carregarContatos())
+                .catch(error => console.error("Erro ao excluir contato:", error));
         }
     }
 
     // Carregar os contatos ao carregar a página
     carregarContatos();
+
+    // Filtrar por categorias
+    function filterContacts(category) {
+        const contactCards = document.querySelectorAll('.contact-card');
+        contactCards.forEach(card => {
+            const contactCategory = card.getAttribute('data-category');
+            if (category === 'all' || contactCategory === category) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    // Função de pesquisa
+    function searchContacts() {
+        const searchTerm = document.getElementById("search").value.toLowerCase();
+        const contactCards = document.querySelectorAll('.contact-card');
+        contactCards.forEach(card => {
+            const name = card.querySelector('h3').textContent.toLowerCase();
+            const phone = card.querySelector('p').textContent.toLowerCase();
+            const email = card.querySelectorAll('p')[1].textContent.toLowerCase();
+            if (name.includes(searchTerm) || phone.includes(searchTerm) || email.includes(searchTerm)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    // Exibir todos os contatos ao carregar a página
+    window.onload = function () {
+        filterContacts('all');
+    }
 });
