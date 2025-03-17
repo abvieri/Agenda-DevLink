@@ -10,18 +10,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 listaContatos.innerHTML = "";
                 data.forEach(contato => {
                     const li = document.createElement("li");
+                    li.classList.add("col-2");
+                    li.classList.add("d-flex");
+                    li.classList.add("justify-content-center");
                     li.dataset.id = contato.id; // Guarda o ID do contato
 
                     // Div para exibir as informações do contato
-                    const contactInfo = document.createElement("div");
-                    contactInfo.classList.add("contact-info");
-                    contactInfo.innerHTML = `
-                        <div class="contact-card">
-                            <img src="./img/Perfil.png" alt="Foto de ${contato.nome}" class="contact-img">
-                            <h3>${contato.nome}</h3>
-                            <p><img src="./img/iconPhone.svg" alt=""> ${contato.numero}</p>
-                            <p><img src="./img/cartinha_email_icone.svg" alt=""> ${contato.email}</p>
-                        </div>
+                    const contactcard = document.createElement("div");
+                    contactcard.classList.add("contact-card");
+                    contactcard.innerHTML = `
+                        <img src="./img/pessoa.svg" alt="Foto de ${contato.nome}" class="contact-img">
+                        <h3>${contato.nome}</h3>
+                        <p><img src="./img/iconPhone.svg" alt=""> ${contato.numero}</p>
+                        <p><img src="./img/cartinha_email_icone.svg" alt=""> ${contato.email}</p>
                     `;
 
                     // Botões para editar e excluir
@@ -35,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     deleteButton.textContent = "Excluir";
                     deleteButton.onclick = () => excluirContato(contato.id);
 
-                    li.appendChild(contactInfo);
+                    li.appendChild(contactcard);
                     // li.appendChild(editButton);
                     // li.appendChild(deleteButton);
                     listaContatos.appendChild(li);
@@ -109,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
         contactCards.forEach(card => {
             const contactCategory = card.getAttribute('data-category');
             if (category === 'all' || contactCategory === category) {
-                card.style.display = 'block';
+                card.style.display = 'flex';
             } else {
                 card.style.display = 'none';
             }
@@ -125,11 +126,28 @@ document.addEventListener("DOMContentLoaded", function () {
             const phone = card.querySelector('p').textContent.toLowerCase();
             const email = card.querySelectorAll('p')[1].textContent.toLowerCase();
             if (name.includes(searchTerm) || phone.includes(searchTerm) || email.includes(searchTerm)) {
-                card.style.display = 'block';
+                card.style.display = 'flex';
             } else {
                 card.style.display = 'none';
             }
         });
+    }
+
+    // Mudança de Estilo dos boiotões no Layout da Página
+    document.getElementById("grid").addEventListener("click", function () {
+        toggleFill("grid", "column");
+    });
+
+    document.getElementById("column").addEventListener("click", function () {
+        toggleFill("column", "grid");
+    });
+
+    function toggleFill(activeId, inactiveId) {
+        let activePaths = document.querySelectorAll(`#${activeId} path`);
+        let inactivePaths = document.querySelectorAll(`#${inactiveId} path`);
+
+        activePaths.forEach(path => path.setAttribute("fill", "#7451A5"));
+        inactivePaths.forEach(path => path.setAttribute("fill", "#c2c2c2"));
     }
 
     // Exibir todos os contatos ao carregar a página

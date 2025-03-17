@@ -1,16 +1,18 @@
 /* Estilos gerais */
 body {
-    font-family: "Quattrocento Sans", sans-serif!important;
+    font-family: "Quattrocento Sans", sans-serif !important;
     font-weight: 400;
     font-style: normal;
-    background-color: #f4f4f9;
+    background-color: #F9F9F9 !important;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 #header {
-    background-color: #ffffff;
-    height: 80px;
+    background-color: #FFF !important;
+    height: 100px;
     padding: 0;
     margin: 0;
 }
@@ -23,11 +25,11 @@ body {
 
 .header-logo {
     width: 100%;
-    height: 100%;
+    height: 100px;
 }
 
 .navbar-brand {
-    height: 80px;
+    height: 100px;
     padding: 0 !important;
     margin: 0 !important;
 }
@@ -36,7 +38,7 @@ h1 {
     font-size: 2em;
 }
 
-b{
+b {
     color: red;
 }
 
@@ -48,23 +50,23 @@ b{
     margin-top: 20px;
 }
 
-.modal-content{
+.modal-content {
     align-items: center;
 }
 
-.modal-content h1{
+.modal-content h1 {
     font-weight: 700;
 }
 
-.modal-body .btn{
-    background-color: #a796fc;
+.modal-body .btn {
+    background-color: var(--Roxo);
     color: #FFF;
     width: 100%;
     height: 50px;
 }
 
-.modal-body .btn:hover{
-    background-color: #7451a5;
+.modal-body .btn:hover {
+    background-color: var(--Lilas);
     color: #FFF;
 }
 
@@ -72,11 +74,12 @@ b{
     border-radius: 2%;
 }
 
-.modal-body .row{
+.modal-body .row {
     justify-content: center;
 }
 
-.form-control, .form-select {
+.form-control,
+.form-select {
     height: 50px;
 }
 
@@ -87,107 +90,117 @@ b{
     gap: 10px;
 }
 
+.nav-pills .nav-link {
+    font-size: 15pt;
+    color: var(--Roxo);
+    font-weight: 700;
+}
+
+.nav-link:hover,
+.nav-link:active,
+.nav-link:focus-visible,
+.nav-link:focus {
+    color: var(--Lilas) !important;
+}
+
+.dropdown-item {
+    font-size: 14pt;
+}
+
+.dropdown-item:hover {
+    background-color: #a796fc10 !important;
+    color: var(--Preto) !important;
+}
+
+.profile {
+    display: flex;
+    align-items: stretch;
+    gap: 15px;
+    font-size: 12pt;
+    color: rgba(143, 143, 143, 1);
+    font-weight: 400;
+    white-space: nowrap;
+    text-align: right;
+}
+
+.profile-image {
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 60px;
+    border-radius: 14px;
+    flex-shrink: 0;
+}
+
+.arrow-icon {
+    aspect-ratio: 1.88;
+    object-fit: contain;
+    object-position: center;
+    width: 15px;
+    margin: auto 0;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.profile-texts{
+    display: flex;
+    flex-direction: column;
+    flex-basis: auto;
+}
+
+.profile-texts p{
+    text-align: start;
+    flex-basis: auto;
+    justify-content: center;
+    margin: 0;
+}
+
+.profile-texts p:first-child{
+    font-size: 13pt;
+    color: var(--Preto);
+    font-weight: 700;
+}
+
 /* Estilos para os cartões */
 .contact-card {
     background-color: white;
+    width: 100%;
+    height: auto;
     padding: 10px;
     margin: 10px;
-    width: 150px;
-    height: auto;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     font-size: 12px;
 }
 
-#lista-contatos{
+.contact-card h3 {
+    font-size: 18pt;
+}
+
+#lista-contatos {
     list-style: none;
 }
-
-#container-card{
-
-}
-
 
 /* Estilos da imagem dentro do cartão de contato */
 .contact-img {
     width: 100px;
-    /* Defina o tamanho da imagem */
     height: 100px;
-    /* Largura e altura iguais para manter a proporção */
-    border-radius: 5PX;
+    border-radius: 5px;
     margin-bottom: 10px;
 }
 
 h3 {
-    font-size: 1.2em;
+    font-size: 1em;
     margin-bottom: 10px;
 }
 
 p {
-    font-size: 0.9em;
+    font-size: 12pt;
     color: #555;
 }
 
-/* Responsividade: Ajuste para telas menores */
-@media (max-width: 768px) {
-    .contact-card {
-        width: 120px;
-        /* Reduz a largura em telas menores */
-    }
-
-    .contact-row {
-        justify-content: space-evenly;
-        /* Ajuste de espaçamento para telas menores */
-    }
-}
-
-/* Abas e Barra de Pesquisa */
-.tabs-search {
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    flex-direction: column-reverse;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.tabs {
-    display: flex;
-}
-
 /* Estilo sublinhado roxo para as guias */
-.tab-btn {
-    background: none;
-    color: (--Preto);
-    font-size: 1.2em;
-    font-weight: 700;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    position: relative;
-}
-
-.tab-btn:hover {
-    color: #6a0dad;
-}
-
-.tab-btn::after {
-    content: "";
-    display: block;
-    width: 100%;
-    height: 2px;
-    background: #6a0dad;
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    transform: scaleX(0);
-    transition: transform 0.3s ease-in-out;
-}
-
-.tab-btn:hover::after {
-    transform: scaleX(1);
-}
 
 .contact-card p {
     display: flex;
@@ -200,17 +213,15 @@ p {
     height: 18px;
 }
 
+.contact-card h3 {
+    font-size: 18pt;
+    font-weight: 700;
+}
 
 .lupa {
     width: 10px;
     height: 10px;
     margin-right: 0;
-}
-
-/* Container da barra de pesquisa */
-.search-container {
-    display: flex;
-    align-items: center;
 }
 
 /* Caixa de pesquisa com borda e ícone */
@@ -225,7 +236,7 @@ p {
 
 /* Ícone de lupa dentro da barra de pesquisa */
 .search-icon {
-    width: 20px;
+    width: 25px;
     height: 20px;
     margin-left: 8px;
 }
@@ -235,8 +246,7 @@ p {
     border: none;
     outline: none;
     padding: 8px;
-    font-size: 1em;
-    width: 500px;
+    font-size: 16pt;
 }
 
 /* Botão de adicionar contato */
@@ -253,21 +263,54 @@ p {
     box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
 }
 
-footer {
-    text-align: left;
-    justify-content: left;
-}
-
-.numpag {
-    width: 15%;
-    margin-left: 80%;
-
-}
-
 .organizacao {
-    width: 100px;
-    height: 55px;
-    margin: 0
+    border-radius: 10px;
+    width: fit-content;
+    height: fit-content;
+    padding: 15px;
+    margin-right: 10px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+    background-color: #fff;
+    border: none;
+}
+
+path {
+    transition: fill 0.3s ease-in-out;
+}
+
+/* Contact Button Styles */
+.contact-button {
+    width: 180px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 10px;
+    background-color: var(--Roxo);
+    padding: 0 10px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: all 0.5s;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.04);
+}
+
+.contact-button:hover,
+.contact-button:active,
+.contact-button:focus-visible {
+    background-color: var(--Lilas);
+}
+
+.contact-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.button-text {
+    color: #fff;
+    font-size: 12pt;
+    font-weight: 700;
 }
 
 :root {
@@ -275,4 +318,103 @@ footer {
     --Lilas: #a796fc;
     --Azul: #151328;
     --Preto: #0a0a0a;
+}
+
+
+
+
+
+
+
+/* Import fonts */
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Poppins:wght@500&display=swap");
+
+/* Pagination container */
+.pagination-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 50px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Pagination counter */
+.pagination-counter {
+  font-size: 16px;
+  color: #000;
+}
+
+.counter-bold {
+  font-weight: 700;
+}
+
+.counter-regular {
+  font-weight: 400;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pagination-button {
+  width: 50px;
+  height: 50px;
+  border: 1px solid #c2c2c2;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.pagination-button:hover {
+  background-color: #f9f9f9;
+}
+
+.pagination-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(116, 81, 165, 0.3);
+}
+
+.pagination-numbers {
+  display: flex;
+  align-items: center;
+  gap: 33px;
+  height: 51px;
+  border: 1px solid #c2c2c2;
+  border-radius: 14px;
+  padding: 0 21px;
+  position: relative;
+}
+
+.page-number {
+  color: #202020;
+  font-weight: 500;
+  font-family: "Poppins", sans-serif;
+  font-size: 18px;
+  width: 51px;
+  height: 51px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.page-number:hover {
+  color: #7451a5;
+}
+
+.page-number.active {
+  color: #7451a5;
+  font-weight: 600;
 }
