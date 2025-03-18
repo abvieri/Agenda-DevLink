@@ -42,6 +42,16 @@ const express = require('express');
      res.status(500).json({ message: 'Erro ao listar contatos', error: err });
    }
  });
+
+const path = require('path');
+
+ // Servir arquivos estáticos da pasta agenda-frontend
+ app.use(express.static(path.join(__dirname, 'agenda-frontend')));
+ 
+ // Para garantir que todas as rotas desconhecidas carreguem o index.html
+ app.get('*', (req, res) => {
+   res.sendFile(path.join(__dirname, 'agenda-frontend', 'index.html'));
+ });
  
  // Iniciar o servidor
  app.listen(port, () => {
