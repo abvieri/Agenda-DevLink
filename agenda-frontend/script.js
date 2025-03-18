@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Função para carregar os contatos da API
     function carregarContatos() {
-        fetch("http://localhost:3000/contatos")
+        fetch("/contatos")
             .then(response => response.json())
             .then(data => {
                 listaContatos.innerHTML = "";
