@@ -5,7 +5,6 @@ const port = 3000;
 
 // Middleware para parsear o corpo das requisições (JSON)
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'agenda-frontend')));
 
 const cors = require('cors');
 app.use(cors());
