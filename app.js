@@ -5,6 +5,7 @@ const express = require('express');
  
  // Middleware para parsear o corpo das requisições (JSON)
  app.use(express.json());
+ app.use(express.static(path.join(__dirname, 'agenda-frontend')));
  
  const cors = require('cors');
  app.use(cors());
@@ -43,16 +44,7 @@ const express = require('express');
    }
  });
  
- const path = require('path');
- 
- // Servir arquivos estáticos da pasta agenda-frontend
- app.use(express.static(path.join(__dirname, 'agenda-frontend')));
- 
- // Para garantir que todas as rotas desconhecidas carreguem o index.html
- app.get('*', (req, res) => {
-   res.sendFile(path.join(__dirname, 'agenda-frontend', 'index.html'));
- });
- 
  // Iniciar o servidor
  app.listen(port, () => {
    console.log(`🚀 Servidor rodando na porta ${port}`);
+ });
