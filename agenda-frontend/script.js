@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const novoContato = { nome, sobrenome, numero, email, foto };
 
-        fetch("http://localhost:3000/contatos", {
+        fetch("/contatos", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const numero = prompt("Digite o novo número:");
         const email = prompt("Digite o novo e-mail:");
 
-        fetch(`http://localhost:3000/contatos/${id}`, {
+        fetch(`/contatos/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Função para excluir um contato
     function excluirContato(id) {
         if (confirm("Tem certeza que deseja excluir este contato?")) {
-            fetch(`http://localhost:3000/contatos/${id}`, {
+            fetch(`/contatos/${id}`, {
                 method: "DELETE"
             })
                 .then(() => carregarContatos())
