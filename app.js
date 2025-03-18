@@ -43,6 +43,16 @@ app.get('/contatos', async (req, res) => {
   }
 });
 
+const path = require('path');
+
+// Servir arquivos estáticos da pasta agenda-frontend
+app.use(express.static(path.join(__dirname, 'agenda-frontend')));
+
+// Para garantir que todas as rotas desconhecidas carreguem o index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'agenda-frontend', 'index.html'));
+});
+
 // Iniciar o servidor
 app.listen(port, () => {
   console.log(`🚀 Servidor rodando na porta ${port}`);
