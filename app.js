@@ -34,34 +34,40 @@ const express = require('express');
  
   // Rota para listar todos os contatos
   // Rota para buscar contatos por nome, telefone ou email
-app.get('/contatos/buscar', async (req, res) => {
+// Rota para listar todos os contatos ou buscar por nome, telefone ou email
+app.get('/contatos', async (req, res) => {
   const { nome, numero, email } = req.query;
 
   try {
     const connection = await getConnection();
 
-    let query = 'SELECT * FROM contatos WHERE 1=1';
+    let query = 'SELECT * FROM contatos';
     const params = [];
 
-    if (nome) {
-      query += ' AND nome LIKE ?';
-      params.push(`%${nome}%`);
-    }
-    if (numero) {
-      query += ' AND numero LIKE ?';
-      params.push(`%${numero}%`);
-    }
-    if (email) {
-      query += ' AND email LIKE ?';
-      params.push(`%${email}%`);
+    if (nome || numero || email) {
+      query += ' WHERE 1=1';
+
+      if (nome) {
+        query += ' AND nome LIKE ?';
+        params.push(`%${nome}%`);
+      }
+      if (numero) {
+        query += ' AND numero LIKE ?';
+        params.push(`%${numero}%`);
+      }
+      if (email) {
+        query += ' AND email LIKE ?';
+        params.push(`%${email}%`);
+      }
     }
 
     const [rows] = await connection.execute(query, params);
     res.status(200).json(rows);
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao buscar contatos', error: err });
+    res.status(500).json({ message: 'Erro ao listar contatos', error: err });
   }
 });
+
 
  
  const path = require('path');
