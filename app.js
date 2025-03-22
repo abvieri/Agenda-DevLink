@@ -42,6 +42,8 @@ app.get('/contatos', async (req, res) => {
   const { nome, numero, email } = req.query;
 
   try {
+    const connection = await pool.getConnection();
+
     let query = 'SELECT * FROM contatos WHERE 1=1';
     const params = [];
 
@@ -50,20 +52,27 @@ app.get('/contatos', async (req, res) => {
       params.push(`%${nome}%`);
     }
     if (numero) {
-      query += ' AND numero LIKE ?';
-      params.push(`%${numero}%`);
+      query += ' AND numero = ?'; // Use igualdade exata para número
+      params.push(numero);
     }
     if (email) {
-      query += ' AND email LIKE ?';
-      params.push(`%${email}%`);
+      query += ' AND email = ?'; // Use igualdade exata para email
+      params.push(email);
     }
 
-    const [rows] = await pool.execute(query, params);
+    console.log('Consulta SQL:', query);
+    console.log('Parâmetros:', params);
+
+    const [rows] = await connection.execute(query, params);
+    connection.release(); // Libere a conexão
+
     res.status(200).json(rows);
   } catch (err) {
+    console.error('Erro ao buscar contatos:', err);
     res.status(500).json({ message: 'Erro ao buscar contatos', error: err });
   }
 });
+
 
 // Servir arquivos estáticos da pasta agenda-frontend
 app.use(express.static(path.join(__dirname, 'agenda-frontend')));
