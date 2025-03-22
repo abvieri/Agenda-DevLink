@@ -70,7 +70,8 @@ app.get('/contatos', async (req, res) => {
     console.log('Consulta SQL:', query);
     console.log('Parâmetros:', params);
 
-    const [rows] = await connection.execute(query, params);
+    const [rows] = await connection.query(query, params);
+
     res.status(200).json(rows);
   } catch (err) {
     console.error('Erro ao buscar contatos:', err);
