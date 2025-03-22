@@ -1,5 +1,5 @@
-const express = require('express'); 
-const getConnection = require('./db'); // Importando a função correta
+const express = require('express');
+const { pool } = require('./db'); // Importa o pool corretamente
 const app = express();
 const port = 3000;
 const cors = require('cors');
@@ -20,12 +20,18 @@ app.post('/contatos', async (req, res) => {
   }
 
   try {
-    const connection = await getConnection();
-    const [result] = await connection.execute(
+    const [result] = await pool.execute(
       'INSERT INTO contatos (nome, sobrenome, numero, email, foto) VALUES (?, ?, ?, ?, ?)',
       [nome, sobrenome, numero, email, foto]
     );
-    res.status(201).json({ id: result.insertId, nome, sobrenome, numero, email, foto });
+    res.status(201).json({
+      id: result.insertId,
+      nome,
+      sobrenome,
+      numero,
+      email,
+      foto
+    });
   } catch (err) {
     res.status(500).json({ message: 'Erro ao criar contato', error: err });
   }
@@ -36,9 +42,8 @@ app.get('/contatos', async (req, res) => {
   const { nome, numero, email } = req.query;
 
   try {
-    const connection = await getConnection();
     let query = 'SELECT * FROM contatos WHERE 1=1';
-    let params = [];
+    const params = [];
 
     if (nome) {
       query += ' AND nome LIKE ?';
@@ -53,7 +58,7 @@ app.get('/contatos', async (req, res) => {
       params.push(`%${email}%`);
     }
 
-    const [rows] = await connection.execute(query, params);
+    const [rows] = await pool.execute(query, params);
     res.status(200).json(rows);
   } catch (err) {
     res.status(500).json({ message: 'Erro ao buscar contatos', error: err });
@@ -63,7 +68,7 @@ app.get('/contatos', async (req, res) => {
 // Servir arquivos estáticos da pasta agenda-frontend
 app.use(express.static(path.join(__dirname, 'agenda-frontend')));
 
-// Para garantir que todas as rotas desconhecidas carreguem o index.html
+// Rota para todas as rotas desconhecidas
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'agenda-frontend', 'index.html'));
 });
