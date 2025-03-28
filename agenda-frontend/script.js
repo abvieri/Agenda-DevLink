@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("form-contato");
     const listaContatos = document.getElementById("lista-contatos");
-    const dbContatos = "http://localhost:3000/contatos";
-    // const dbContatos = "/contatos";
+    // const dbContatos = "http://localhost:3000/contatos";
+    const dbContatos = "/contatos";
 
     // Função para carregar os contatos da API
     function carregarContatos() {
@@ -55,32 +55,61 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Erro ao carregar contatos:", error));
     }
 
-
-    // Função para adicionar um novo contato
+    
+    // Função para adicionar contato
     form.addEventListener("submit", function (e) {
         e.preventDefault();
+
+        // Obter os valores do formulário
         const nome = document.getElementById("nome").value;
         const sobrenome = document.getElementById("sobrenome").value;
         const numero = document.getElementById("numero").value;
         const email = document.getElementById("email").value;
         const foto = document.getElementById("foto").value;
+        const id = document.getElementById("contatoId").value;  // Obtém o ID do contato (se for edição)
 
-        const novoContato = { nome, sobrenome, numero, email, foto };
+        // Verificar se os campos obrigatórios estão preenchidos
+        if (!nome || !numero || !email) {
+            alert("Os campos Nome, Telefone e E-mail são obrigatórios.");
+            return;
+        }
 
-        fetch(dbContatos, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(novoContato)
-        })
-            .then(response => response.json())
-            .then(() => {
-                carregarContatos();
-                form.reset();
+        const contatoData = { nome, sobrenome, numero, email, foto };
+
+        if (id) {
+            // Caso o ID esteja preenchido, é uma edição
+            fetch(`${dbContatos}/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(contatoData)
             })
-            .catch(error => console.error("Erro ao adicionar contato:", error));
+                .then(response => response.json())
+                .then(() => {
+                    carregarContatos();  // Recarregar os contatos após a edição
+                    location.reload();   // Recarregar a página para atualizar os dados
+                })
+                .catch(error => console.error("Erro ao editar contato:", error));
+        } else {
+            // Caso contrário, é a criação de um novo contato
+            fetch(dbContatos, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(contatoData)
+            })
+                .then(response => response.json())
+                .then(() => {
+                    carregarContatos();
+                    form.reset();
+                    location.reload();
+                })
+                .catch(error => console.error("Erro ao adicionar contato:", error));
+        }
     });
+
 
     // Função para editar um contato
     function editarContato(id) {
@@ -94,36 +123,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById('numero').value = contato.numero;
                 document.getElementById('email').value = contato.email;
                 document.getElementById('foto').value = contato.foto || '';
-    
-                // Adiciona um evento de submit para salvar as alterações
-                document.getElementById('form-contato').onsubmit = function(event) {
-                    event.preventDefault();  // Impede o envio do formulário
-    
-                    const nome = document.getElementById('nome').value;
-                    const sobrenome = document.getElementById('sobrenome').value;
-                    const numero = document.getElementById('numero').value;
-                    const email = document.getElementById('email').value;
-                    const foto = document.getElementById('foto').value;
-    
-                    // Enviar a requisição PUT para editar o contato
-                    fetch(`${dbContatos}/${id}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ nome, sobrenome, numero, email, foto })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        carregarContatos();  // Recarregar a lista de contatos
-                        location.reload();
-                    })
-                    .catch(error => console.error('Erro ao editar o contato:', error));
-                };
+
+                // Definir o campo oculto com o ID do contato
+                document.getElementById('contatoId').value = contato.id;
             })
             .catch(error => console.error('Erro ao carregar dados do contato:', error));
     }
-    
+
+
     // Função para excluir um contato
     function excluirContato(id) {
         if (confirm("Tem certeza que deseja excluir este contato?")) {
@@ -145,6 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
         }
     }
+
 
     // Filtrar por categorias
     function filterContacts(category) {
