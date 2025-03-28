@@ -1,49 +1,44 @@
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("form-contato");
     const listaContatos = document.getElementById("lista-contatos");
+    // const dbContatos = "http://localhost:3000/contatos";
+    const dbContatos = "'/contatos'";
 
     // Função para carregar os contatos da API
     function carregarContatos() {
-        fetch("/contatos")
+        fetch(dbContatos)
             .then(response => response.json())
             .then(data => {
                 listaContatos.innerHTML = "";
                 data.forEach(contato => {
                     const li = document.createElement("li");
-                    li.classList.add("col-2");
-                    li.classList.add("d-flex");
-                    li.classList.add("justify-content-center");
-                    li.dataset.id = contato.id; // Guarda o ID do contato
-
-                    // Div para exibir as informações do contato
-                    const contactcard = document.createElement("div");
-                    contactcard.classList.add("contact-card");
-                    contactcard.innerHTML = `
-                        <img src="./img/pessoa.svg" alt="Foto de ${contato.nome}" class="contact-img">
-                        <h3>${contato.nome}</h3>
-                        <p><img src="./img/iconPhone.svg" alt=""> ${contato.numero}</p>
-                        <p><img src="./img/cartinha_email_icone.svg" alt=""> ${contato.email}</p>
+                    li.classList.add("col-2", "d-flex", "justify-content-center");
+                    li.dataset.id = contato.id;
+    
+                    // Criando o card de contato com template literals
+                    li.innerHTML = `
+                        <div class="contact-card d-flex flex-column">
+                            <details class="menueditcard">
+                                <summary>⋮</summary>
+                                <ul>
+                                    <li><a href="#">Detalhes</a></li>
+                                    <li><a href="#" onclick="editarContato(${contato.id})">Editar</a></li>
+                                    <li><a href="#" class="delete" onclick="excluirContato(${contato.id})">Deletar</a></li>
+                                </ul>
+                            </details>
+                            <img src="./img/pessoa.svg" alt="Foto de ${contato.nome}" class="truncate contact-img">
+                            <h3 class="truncate">${contato.nome}</h3>
+                            <p class="truncate"><img src="./img/iconPhone.svg" alt="">${contato.numero}</p>
+                            <p class="truncate"><img src="./img/cartinha_email_icone.svg" alt="">${contato.email}</p>
+                        </div>
                     `;
-
-                    // Botões para editar e excluir
-                    const editButton = document.createElement("button");
-                    editButton.classList.add("edit-btn");
-                    editButton.textContent = "Editar";
-                    editButton.onclick = () => editarContato(contato.id);
-
-                    const deleteButton = document.createElement("button");
-                    deleteButton.classList.add("delete-btn");
-                    deleteButton.textContent = "Excluir";
-                    deleteButton.onclick = () => excluirContato(contato.id);
-
-                    li.appendChild(contactcard);
-                    // li.appendChild(editButton);
-                    // li.appendChild(deleteButton);
+                    
                     listaContatos.appendChild(li);
                 });
             })
             .catch(error => console.error("Erro ao carregar contatos:", error));
     }
+    
 
     // Função para adicionar um novo contato
     form.addEventListener("submit", function (e) {
@@ -56,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const novoContato = { nome, sobrenome, numero, email, foto };
 
-        fetch("/contatos", {
+        fetch(dbContatos, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -78,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const numero = prompt("Digite o novo número:");
         const email = prompt("Digite o novo e-mail:");
 
-        fetch(`/contatos/${id}`, {
+        fetch({dbContatos}`/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -93,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Função para excluir um contato
     function excluirContato(id) {
         if (confirm("Tem certeza que deseja excluir este contato?")) {
-            fetch(`/contatos/${id}`, {
+            fetch({dbContatos}`/${id}`, {
                 method: "DELETE"
             })
                 .then(() => carregarContatos())
@@ -149,6 +144,14 @@ document.addEventListener("DOMContentLoaded", function () {
         activePaths.forEach(path => path.setAttribute("fill", "#7451A5"));
         inactivePaths.forEach(path => path.setAttribute("fill", "#c2c2c2"));
     }
+
+    document.addEventListener("click", function (event) {
+        const menu = document.querySelector(".menueditcard");
+        
+        if (menu.hasAttribute("open") && !menu.contains(event.target)) {
+          menu.removeAttribute("open");
+        }
+      });
 
     // Exibir todos os contatos ao carregar a página
     window.onload = function () {

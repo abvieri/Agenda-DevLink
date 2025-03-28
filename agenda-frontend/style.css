@@ -142,20 +142,20 @@ b {
     cursor: pointer;
 }
 
-.profile-texts{
+.profile-texts {
     display: flex;
     flex-direction: column;
     flex-basis: auto;
 }
 
-.profile-texts p{
+.profile-texts p {
     text-align: start;
     flex-basis: auto;
     justify-content: center;
     margin: 0;
 }
 
-.profile-texts p:first-child{
+.profile-texts p:first-child {
     font-size: 13pt;
     color: var(--Preto);
     font-weight: 700;
@@ -176,6 +176,8 @@ b {
 
 .contact-card h3 {
     font-size: 18pt;
+    font-weight: 700;
+    width: 100%;
 }
 
 #lista-contatos {
@@ -206,16 +208,12 @@ p {
     display: flex;
     align-items: center;
     gap: 8px;
+    width: 90%;
 }
 
 .contact-card p img {
     width: 18px;
     height: 18px;
-}
-
-.contact-card h3 {
-    font-size: 18pt;
-    font-weight: 700;
 }
 
 .lupa {
@@ -313,6 +311,87 @@ path {
     font-weight: 700;
 }
 
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.contact-card p {
+    width: 90%;
+    margin-bottom: 10px !important;
+}
+
+.contact-card h3 {
+    margin-bottom: 20px !important;
+}
+
+.contact-card p img {
+    width: 30px;
+    height: 30px;
+}
+
+details {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    font-size: 20px;
+    border: none;
+    background: none;
+}
+
+summary {
+    list-style: none;
+    cursor: pointer;
+    color: gray;
+    text-align: end!important;
+    padding: 0 10px 0 0;
+    font-weight: 700;
+    height: 0px;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+details ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    position: absolute;
+    top: 25px;
+    right: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+details[open] ul {
+    display: block;
+}
+
+.menueditcard li a {
+    text-decoration: none;
+    color: var(--Preto);
+    display: block;
+    width: 100px;
+    padding: 12px 10px;
+    transition: fill 0.3s ease-in-out;
+    font-size: 12pt;
+}
+
+.menueditcard li a:hover {
+    background-color: #a796fc10 !important;
+    color: var(--Lilas);
+}
+
+.menueditcard .delete:hover {
+    color: red!important;
+}
+
 :root {
     --Roxo: #7451a5;
     --Lilas: #a796fc;
@@ -342,79 +421,79 @@ path {
 
 /* Pagination counter */
 .pagination-counter {
-  font-size: 16px;
-  color: #000;
+    font-size: 16px;
+    color: #000;
 }
 
 .counter-bold {
-  font-weight: 700;
+    font-weight: 700;
 }
 
 .counter-regular {
-  font-weight: 400;
+    font-weight: 400;
 }
 
 .pagination-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .pagination-button {
-  width: 50px;
-  height: 50px;
-  border: 1px solid #c2c2c2;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  background: none;
-  cursor: pointer;
-  padding: 0;
+    width: 50px;
+    height: 50px;
+    border: 1px solid #c2c2c2;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: none;
+    cursor: pointer;
+    padding: 0;
 }
 
 .pagination-button:hover {
-  background-color: #f9f9f9;
+    background-color: #f9f9f9;
 }
 
 .pagination-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(116, 81, 165, 0.3);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(116, 81, 165, 0.3);
 }
 
 .pagination-numbers {
-  display: flex;
-  align-items: center;
-  gap: 33px;
-  height: 51px;
-  border: 1px solid #c2c2c2;
-  border-radius: 14px;
-  padding: 0 21px;
-  position: relative;
+    display: flex;
+    align-items: center;
+    gap: 33px;
+    height: 51px;
+    border: 1px solid #c2c2c2;
+    border-radius: 14px;
+    padding: 0 21px;
+    position: relative;
 }
 
 .page-number {
-  color: #202020;
-  font-weight: 500;
-  font-family: "Poppins", sans-serif;
-  font-size: 18px;
-  width: 51px;
-  height: 51px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  cursor: pointer;
+    color: #202020;
+    font-weight: 500;
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    width: 51px;
+    height: 51px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
 .page-number:hover {
-  color: #7451a5;
+    color: #7451a5;
 }
 
 .page-number.active {
-  color: #7451a5;
-  font-weight: 600;
+    color: #7451a5;
+    font-weight: 600;
 }
