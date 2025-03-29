@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("form-contato");
     const listaContatos = document.getElementById("lista-contatos");
-    const dbContatos = "http://localhost:3000/contatos";
-    //const dbContatos = "/contatos";
+    //const dbContatos = "http://localhost:3000/contatos";
+    const dbContatos = "/contatos";
 
     // Função para carregar os contatos da API
     function carregarContatos() {
