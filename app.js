@@ -32,11 +32,9 @@ app.post('/contatos', async (req, res) => {
   }
 });
 
-// Rota para listar todos os contatos
-// Rota para buscar contatos por nome, telefone ou email
-// Rota para listar todos os contatos ou buscar por nome, telefone ou email
+// Rota para listar todos os contatos ou buscar por nome, telefone, email ou categoria
 app.get('/contatos', async (req, res) => {
-  const { nome, numero, email } = req.query;
+  const { nome, numero, email, categoria } = req.query;
 
   try {
     const connection = await getConnection();
@@ -44,7 +42,7 @@ app.get('/contatos', async (req, res) => {
     let query = 'SELECT * FROM contatos';
     const params = [];
 
-    if (nome || numero || email) {
+    if (nome || numero || email || categoria) {
       query += ' WHERE 1=1';
 
       if (nome) {
@@ -59,6 +57,10 @@ app.get('/contatos', async (req, res) => {
         query += ' AND email LIKE ?';
         params.push(`%${email}%`);
       }
+      if (categoria) {
+        query += ' AND categoria = ?';
+        params.push(categoria);
+      }
     }
 
     const [rows] = await connection.execute(query, params);
@@ -67,6 +69,7 @@ app.get('/contatos', async (req, res) => {
     res.status(500).json({ message: 'Erro ao listar contatos', error: err });
   }
 });
+
 
 // Rota para pegar um contato específico com base no ID
 app.get('/contatos/:id', async (req, res) => {
