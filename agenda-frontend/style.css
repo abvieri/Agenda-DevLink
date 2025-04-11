@@ -1,0 +1,499 @@
+/* Estilos gerais */
+body {
+    font-family: "Quattrocento Sans", sans-serif !important;
+    font-weight: 400;
+    font-style: normal;
+    background-color: #F9F9F9 !important;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#header {
+    background-color: #FFF !important;
+    height: 100px;
+    padding: 0;
+    margin: 0;
+}
+
+#header .container-fluid {
+    padding: 0 !important;
+    margin: 0 !important;
+    justify-content: flex-start;
+}
+
+.header-logo {
+    width: 100%;
+    height: 100px;
+}
+
+.navbar-brand {
+    height: 100px;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+b {
+    color: red;
+}
+
+/* Estilos da lista de contatos */
+.contact-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.modal-content {
+    align-items: center;
+}
+
+.modal-content h1 {
+    font-weight: 700;
+}
+
+.modal-body .btn {
+    background-color: var(--Roxo);
+    color: #FFF;
+    width: 100%;
+    height: 50px;
+}
+
+.modal-body .btn:hover {
+    background-color: var(--Lilas);
+    color: #FFF;
+}
+
+.modal-dialog-scrollable .modal-content {
+    border-radius: 2%;
+}
+
+.modal-body .row {
+    justify-content: center;
+}
+
+.form-control,
+.form-select {
+    height: 50px;
+}
+
+.contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.nav-pills .nav-link {
+    font-size: 15pt;
+    color: var(--Roxo);
+    font-weight: 700;
+}
+
+.nav-link:hover,
+.nav-link:active,
+.nav-link:focus-visible,
+.nav-link:focus {
+    color: var(--Lilas) !important;
+}
+
+.dropdown-item {
+    font-size: 14pt;
+}
+
+.dropdown-item:hover {
+    background-color: #a796fc10 !important;
+    color: var(--Preto) !important;
+}
+
+.profile {
+    display: flex;
+    align-items: stretch;
+    gap: 15px;
+    font-size: 12pt;
+    color: rgba(143, 143, 143, 1);
+    font-weight: 400;
+    white-space: nowrap;
+    text-align: right;
+}
+
+.profile-image {
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 60px;
+    border-radius: 14px;
+    flex-shrink: 0;
+}
+
+.arrow-icon {
+    aspect-ratio: 1.88;
+    object-fit: contain;
+    object-position: center;
+    width: 15px;
+    margin: auto 0;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.profile-texts {
+    display: flex;
+    flex-direction: column;
+    flex-basis: auto;
+}
+
+.profile-texts p {
+    text-align: start;
+    flex-basis: auto;
+    justify-content: center;
+    margin: 0;
+}
+
+.profile-texts p:first-child {
+    font-size: 13pt;
+    color: var(--Preto);
+    font-weight: 700;
+}
+
+/* Estilos para os cartões */
+.contact-card {
+    background-color: white;
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-size: 12px;
+}
+
+.contact-card h3 {
+    font-size: 18pt;
+    font-weight: 700;
+    width: 100%;
+}
+
+#lista-contatos {
+    list-style: none;
+}
+
+/* Estilos da imagem dentro do cartão de contato */
+.contact-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+h3 {
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 12pt;
+    color: #555;
+}
+
+/* Estilo sublinhado roxo para as guias */
+
+.contact-card p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 90%;
+}
+
+.contact-card p img {
+    width: 18px;
+    height: 18px;
+}
+
+.lupa {
+    width: 10px;
+    height: 10px;
+    margin-right: 0;
+}
+
+/* Caixa de pesquisa com borda e ícone */
+.search-box {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 5px;
+    padding: 5px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+}
+
+/* Ícone de lupa dentro da barra de pesquisa */
+.search-icon {
+    width: 25px;
+    height: 20px;
+    margin-left: 8px;
+}
+
+/* Barra de pesquisa */
+.search-bar {
+    border: none;
+    outline: none;
+    padding: 8px;
+    font-size: 16pt;
+}
+
+/* Botão de adicionar contato */
+.add-contact-btn {
+    background: none;
+    border: none;
+    margin-left: 0px;
+    cursor: pointer;
+}
+
+.add-contact-btn img {
+    width: 150px;
+    height: 100%;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+}
+
+.organizacao {
+    border-radius: 10px;
+    width: fit-content;
+    height: fit-content;
+    padding: 15px;
+    margin-right: 10px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+    background-color: #fff;
+    border: none;
+}
+
+path {
+    transition: fill 0.3s ease-in-out;
+}
+
+/* Contact Button Styles */
+.contact-button {
+    width: 180px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 10px;
+    background-color: var(--Roxo);
+    padding: 0 10px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: all 0.5s;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.04);
+}
+
+.contact-button:hover,
+.contact-button:active,
+.contact-button:focus-visible {
+    background-color: var(--Lilas);
+}
+
+.contact-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.button-text {
+    color: #fff;
+    font-size: 12pt;
+    font-weight: 700;
+}
+
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.contact-card p {
+    width: 90%;
+    margin-bottom: 10px !important;
+}
+
+.contact-card h3 {
+    margin-bottom: 20px !important;
+}
+
+.contact-card p img {
+    width: 30px;
+    height: 30px;
+}
+
+details {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    font-size: 20px;
+    border: none;
+    background: none;
+}
+
+summary {
+    list-style: none;
+    cursor: pointer;
+    color: gray;
+    text-align: end!important;
+    padding: 0 10px 0 0;
+    font-weight: 700;
+    height: 0px;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+details ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    position: absolute;
+    top: 25px;
+    right: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+details[open] ul {
+    display: block;
+}
+
+.menueditcard li a {
+    text-decoration: none;
+    color: var(--Preto);
+    display: block;
+    width: 100px;
+    padding: 12px 10px;
+    transition: fill 0.3s ease-in-out;
+    font-size: 12pt;
+}
+
+.menueditcard li a:hover {
+    background-color: #a796fc10 !important;
+    color: var(--Lilas);
+}
+
+.menueditcard .delete:hover {
+    color: red!important;
+}
+
+:root {
+    --Roxo: #7451a5;
+    --Lilas: #a796fc;
+    --Azul: #151328;
+    --Preto: #0a0a0a;
+}
+
+
+
+
+
+
+
+/* Import fonts */
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Poppins:wght@500&display=swap");
+
+/* Pagination container */
+.pagination-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 50px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Pagination counter */
+.pagination-counter {
+    font-size: 16px;
+    color: #000;
+}
+
+.counter-bold {
+    font-weight: 700;
+}
+
+.counter-regular {
+    font-weight: 400;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination-button {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #c2c2c2;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.pagination-button:hover {
+    background-color: #f9f9f9;
+}
+
+.pagination-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(116, 81, 165, 0.3);
+}
+
+.pagination-numbers {
+    display: flex;
+    align-items: center;
+    gap: 33px;
+    height: 51px;
+    border: 1px solid #c2c2c2;
+    border-radius: 14px;
+    padding: 0 21px;
+    position: relative;
+}
+
+.page-number {
+    color: #202020;
+    font-weight: 500;
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    width: 51px;
+    height: 51px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.page-number:hover {
+    color: #7451a5;
+}
+
+.page-number.active {
+    color: #7451a5;
+    font-weight: 600;
+}
