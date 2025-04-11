@@ -123,38 +123,31 @@
                     <span>* Indicam campos obrigatórios</span>
                     <div class="modal-body">
                         <form class="row g-4" id="form-contato">
-                            <input type="hidden" id="contatoId"> <!-- Campo oculto para o ID do contato -->
-                        
+                            <input type="hidden" id="contatoId" name="contatoId">
+                          
                             <div class="col-md-4">
-                                <input type="text" class="form-control" id="nome" placeholder="* Nome">
+                              <input type="text" class="form-control" id="nome" name="nome" placeholder="* Nome">
                             </div>
                             <div class="col-md-4">
-                                <input type="text" class="form-control" id="sobrenome" placeholder="* Sobrenome">
+                              <input type="text" class="form-control" id="sobrenome" name="sobrenome" placeholder="* Sobrenome">
                             </div>
                             <div class="col-8">
-                                <input type="text" class="form-control" id="inputEndereço" placeholder="Endereço">
+                              <input type="text" class="form-control" id="inputEndereço" name="endereco" placeholder="Endereço">
                             </div>
                             <div class="col-md-8">
-                                <input type="email" class="form-control" id="email" placeholder="E-mail">
+                              <input type="email" class="form-control" id="email" name="email" placeholder="E-mail">
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" id="numero" placeholder="* Telefone">
+                              <input type="number" class="form-control" id="numero" name="numero" placeholder="* Telefone">
                             </div>
                             <div class="col-md-8">
-                                <select id="inputMarcador" class="form-select" placeholder="Marcadores">
-                                    <option selected>Nenhum</option>
-                                    <option>Favoritos</option>
-                                    <option>Trabalho</option>
-                                    <option>Faculdade</option>
-                                </select>
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" id="foto" placeholder="Foto">
+                              <input id="inputMarcador" name="marcador" class="form-select" placeholder="Marcadores">
                             </div>
                             <div class="col-8 d-flex f-center justify-content-center">
-                                <button type="submit" class="btn">Cadastrar</button>
+                              <button type="submit" class="btn">Cadastrar</button>
                             </div>
-                        </form>
+                          </form>
+                          
                         
                     </div>
                 </div>

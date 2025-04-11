@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("form-contato");
     const listaContatos = document.getElementById("lista-contatos");
-    //const dbContatos = "http://localhost:3000/contatos";
-    const dbContatos = "/contatos";
+    const dbContatos = "http://localhost:3000/contatos";
+    // const dbContatos = "/contatos";
 
     // Função para carregar os contatos da API
     function carregarContatos() {
@@ -59,25 +59,23 @@ document.addEventListener("DOMContentLoaded", function () {
     // Função para adicionar contato
     form.addEventListener("submit", function (e) {
         e.preventDefault();
-
-        // Obter os valores do formulário
+    
         const nome = document.getElementById("nome").value;
         const sobrenome = document.getElementById("sobrenome").value;
         const numero = document.getElementById("numero").value;
         const email = document.getElementById("email").value;
-        const foto = document.getElementById("foto").value;
-        const id = document.getElementById("contatoId").value;  // Obtém o ID do contato (se for edição)
-
-        // Verificar se os campos obrigatórios estão preenchidos
+        const endereco = document.getElementById("inputEndereço").value;
+        const marcador = document.getElementById("inputMarcador").value;
+        const id = document.getElementById("contatoId").value;
+    
         if (!nome || !numero || !email) {
             alert("Os campos Nome, Telefone e E-mail são obrigatórios.");
             return;
         }
-
-        const contatoData = { nome, sobrenome, numero, email, foto };
-
+    
+        const contatoData = { nome, sobrenome, numero, endereco, email, marcador }; // ✅ Agora completo
+    
         if (id) {
-            // Caso o ID esteja preenchido, é uma edição
             fetch(`${dbContatos}/${id}`, {
                 method: "PUT",
                 headers: {
@@ -87,12 +85,11 @@ document.addEventListener("DOMContentLoaded", function () {
             })
                 .then(response => response.json())
                 .then(() => {
-                    carregarContatos();  // Recarregar os contatos após a edição
-                    location.reload();   // Recarregar a página para atualizar os dados
+                    carregarContatos();
+                    location.reload();
                 })
                 .catch(error => console.error("Erro ao editar contato:", error));
         } else {
-            // Caso contrário, é a criação de um novo contato
             fetch(dbContatos, {
                 method: "POST",
                 headers: {
@@ -110,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-
+    
     // Função para editar um contato
     function editarContato(id) {
         // Requisição para pegar os dados do contato
@@ -122,7 +119,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById('sobrenome').value = contato.sobrenome;
                 document.getElementById('numero').value = contato.numero;
                 document.getElementById('email').value = contato.email;
-                document.getElementById('foto').value = contato.foto || '';
 
                 // Definir o campo oculto com o ID do contato
                 document.getElementById('contatoId').value = contato.id;

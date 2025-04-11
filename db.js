@@ -9,6 +9,11 @@ async function getConnection() {
       password: 'bO64FEsqBx1PjZjDpLbX',
       database: 'bbnddvnxc2azi22dbplj',
       port: 3306,
+      // host: 'localhost',
+      // user: 'root',
+      // password: '123456',
+      // database: 'AgendaContatos',
+      // port: 3307,
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0

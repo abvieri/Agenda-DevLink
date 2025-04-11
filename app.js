@@ -135,6 +135,7 @@ app.put('/contatos/:id', async (req, res) => {
 
 
 const path = require('path');
+const { log } = require('console');
 
 // Servir arquivos estáticos da pasta agenda-frontend
 app.use(express.static(path.join(__dirname, 'agenda-frontend')));
