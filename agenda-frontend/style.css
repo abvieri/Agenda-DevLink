@@ -1,94 +1,400 @@
-/* Estilos Gerais */
+/* === VARIÁVEIS === */
+:root {
+    --Roxo: #7451a5;
+    --Lilas: #a796fc;
+    --Azul: #151328;
+    --Preto: #0a0a0a;
+    --CinzaClaro: #f9f9f9;
+    --FontePrincipal: "Quattrocento Sans", sans-serif;
+    --FonteSecundaria: "Poppins", sans-serif;
+    --FontBase: 12pt;
+    --Padding: 15px;
+    --Radius: 10px;
+}
+
+/* === RESET E BASE === */
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    background-color: #f4f4f4;
-    text-align: center;
+    font-family: var(--FontePrincipal);
+    font-weight: 400;
+    background-color: var(--CinzaClaro);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Título */
-h1, h2 {
-    color: #333;
+h1 {
+    font-size: 2em;
 }
 
-/* Formulário */
-#form-container {
+h3 {
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+b {
+    color: red;
+}
+
+p {
+    font-size: var(--FontBase);
+    color: #555;
+}
+
+/* === HEADER === */
+#header {
     background-color: #fff;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 100px;
 }
 
-input[type="text"], input[type="email"], button {
-    padding: 10px;
-    margin: 5px;
-    width: 80%;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+#header .container-fluid {
+    padding: 0;
+    margin: 0;
+    justify-content: flex-start;
 }
 
-button {
-    background-color: #4CAF50;
-    color: white;
+.header-logo,
+.navbar-brand {
+    height: 100px;
+    padding: 0;
+    margin: 0;
+}
+
+/* === PERFIL === */
+.profile {
+    display: flex;
+    align-items: stretch;
+    gap: 15px;
+    font-size: var(--FontBase);
+    color: rgba(143, 143, 143, 1);
+    font-weight: 400;
+    white-space: nowrap;
+    text-align: right;
+}
+
+.profile-image {
+    aspect-ratio: 1;
+    object-fit: contain;
+    width: 60px;
+    border-radius: 14px;
+    flex-shrink: 0;
+}
+
+.arrow-icon {
+    width: 15px;
+    aspect-ratio: 1.88;
     cursor: pointer;
 }
 
-button:hover {
-    background-color: #45a049;
+.profile-texts {
+    display: flex;
+    flex-direction: column;
 }
 
-/* Lista de Contatos */
-ul {
+.profile-texts p {
+    margin: 0;
+    text-align: start;
+}
+
+.profile-texts p:first-child {
+    font-size: 13pt;
+    font-weight: 700;
+    color: var(--Preto);
+}
+
+/* === LISTA DE CONTATOS === */
+.contact-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.contact-card {
+    background-color: white;
+    width: 100%;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-size: var(--FontBase);
+}
+
+.contact-card h3 {
+    font-size: 18pt;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.contact-card p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 90%;
+    margin-bottom: 10px;
+}
+
+.contact-card p img {
+    width: 30px;
+    height: 30px;
+}
+
+.contact-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+#lista-contatos {
+    list-style: none;
+}
+
+/* === MENU SUSPENSO === */
+details {
+    display: inline-block;
+    position: relative;
+    font-size: 20px;
+    background: none;
+}
+
+summary {
+    list-style: none;
+    cursor: pointer;
+    color: gray;
+    text-align: end;
+    font-weight: 700;
+    padding-right: 10px;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+details ul {
     list-style: none;
     padding: 0;
+    margin: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    position: absolute;
+    top: 25px;
+    right: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
 }
 
-li {
+details[open] ul {
+    display: block;
+}
+
+.menueditcard li a {
+    text-decoration: none;
+    color: var(--Preto);
+    padding: 12px 10px;
+    display: block;
+    font-size: var(--FontBase);
+}
+
+.menueditcard li a:hover {
+    background-color: #a796fc10;
+    color: var(--Lilas);
+}
+
+.menueditcard .delete:hover {
+    color: red;
+}
+
+/* === BOTÕES E AÇÕES === */
+.contact-button {
+    width: 180px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: var(--Radius);
+    background-color: var(--Roxo);
+    padding: 0 10px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.5s;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.04);
+}
+
+.contact-button:hover,
+.contact-button:active,
+.contact-button:focus-visible {
+    background-color: var(--Lilas);
+}
+
+.button-text {
+    color: #fff;
+    font-weight: 700;
+}
+
+/* === MODAL === */
+.modal-content {
+    align-items: center;
+    border-radius: 2%;
+}
+
+.modal-content h1 {
+    font-weight: 700;
+}
+
+.modal-body .btn {
+    background-color: var(--Roxo);
+    color: #FFF;
+    height: 50px;
+}
+
+.modal-body .btn:hover {
+    background-color: var(--Lilas);
+}
+
+.modal-body .row {
+    justify-content: center;
+}
+
+.form-control,
+.form-select {
+    height: 50px;
+}
+
+/* === BARRA DE PESQUISA === */
+.search-box {
+    display: flex;
+    align-items: center;
     background-color: white;
-    padding: 15px;
-    margin: 10px auto;
-    width: 60%;
-    border-radius: 8px;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 5px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.search-icon {
+    width: 25px;
+    height: 20px;
+    margin-left: 8px;
+}
+
+.search-bar {
+    border: none;
+    outline: none;
+    padding: 8px;
+    font-size: 16pt;
+}
+
+/* === PAGINAÇÃO === */
+.pagination-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 50px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-/* Estilo do texto de cada contato */
-.contact-info {
-    text-align: left;
-}
-
-.contact-info strong {
-    font-size: 18px;
-    color: #333;
-}
-
-.contact-info span {
+.pagination-counter {
     font-size: 16px;
-    color: #666;
+    color: #000;
 }
 
-/* Botões para Editar e Excluir */
-button.edit-btn, button.delete-btn {
-    padding: 8px 12px;
-    font-size: 14px;
-    border-radius: 5px;
+.counter-bold {
+    font-weight: 700;
+}
+
+.counter-regular {
+    font-weight: 400;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination-button {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #c2c2c2;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
     cursor: pointer;
 }
 
-button.edit-btn {
-    background-color: #f0ad4e;
-    color: white;
+.pagination-button:hover {
+    background-color: #f9f9f9;
 }
 
-button.delete-btn {
-    background-color: #d9534f;
-    color: white;
+.pagination-button:focus {
+    outline: 2px solid rgba(116, 81, 165, 0.3);
 }
 
-button:hover {
-    opacity: 0.8;
+.pagination-numbers {
+    display: flex;
+    align-items: center;
+    gap: 33px;
+    border: 1px solid #c2c2c2;
+    border-radius: 14px;
+    padding: 0 21px;
+}
+
+.page-number {
+    font-family: var(--FonteSecundaria);
+    font-size: 18px;
+    color: #202020;
+    font-weight: 500;
+    width: 51px;
+    height: 51px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.page-number:hover,
+.page-number.active {
+    color: var(--Roxo);
+    font-weight: 600;
+}
+
+/* === RESPONSIVIDADE === */
+@media (max-width: 768px) {
+    .contact-card {
+        width: 90%;
+    }
+
+    .pagination-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .search-bar {
+        font-size: 14pt;
+    }
+}
+
+/* === FOCUS VISÍVEL === */
+button:focus,
+.nav-link:focus,
+.contact-button:focus,
+.search-bar:focus {
+    outline: 2px solid var(--Lilas);
+    outline-offset: 2px;
 }

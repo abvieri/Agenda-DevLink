@@ -1,102 +1,145 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("form-contato");
-    const listaContatos = document.getElementById("lista-contatos");
-
-    // Função para carregar os contatos da API
-    function carregarContatos() {
-        fetch("http://localhost:3000/contatos")
-            .then(response => response.json())
-            .then(data => {
-                listaContatos.innerHTML = "";
-                data.forEach(contato => {
-                    const li = document.createElement("li");
-                    li.dataset.id = contato.id; // Guarda o ID do contato
-
-                    // Div para exibir as informações do contato
-                    const contactInfo = document.createElement("div");
-                    contactInfo.classList.add("contact-info");
-                    contactInfo.innerHTML = `
-                        <strong>${contato.nome} ${contato.sobrenome}</strong><br>
-                        <span>${contato.numero}</span><br>
-                        <span>${contato.email}</span>
-                    `;
-
-                    // Botões para editar e excluir
-                    const editButton = document.createElement("button");
-                    editButton.classList.add("edit-btn");
-                    editButton.textContent = "Editar";
-                    editButton.onclick = () => editarContato(contato.id);
-
-                    const deleteButton = document.createElement("button");
-                    deleteButton.classList.add("delete-btn");
-                    deleteButton.textContent = "Excluir";
-                    deleteButton.onclick = () => excluirContato(contato.id);
-
-                    li.appendChild(contactInfo);
-                    li.appendChild(editButton);
-                    li.appendChild(deleteButton);
-                    listaContatos.appendChild(li);
-                });
-            })
-            .catch(error => console.error("Erro ao carregar contatos:", error));
-    }
-
-    // Função para adicionar um novo contato
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const nome = document.getElementById("nome").value;
-        const sobrenome = document.getElementById("sobrenome").value;
-        const numero = document.getElementById("numero").value;
-        const email = document.getElementById("email").value;
-        const foto = document.getElementById("foto").value;
-
-        const novoContato = { nome, sobrenome, numero, email, foto };
-
-        fetch("http://localhost:3000/contatos", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(novoContato)
-        })
-        .then(response => response.json())
-        .then(() => {
-            carregarContatos();
-            form.reset();
-        })
-        .catch(error => console.error("Erro ao adicionar contato:", error));
+// Criação de 45 contatos fictícios
+const contacts = Array.from({ length: 45 }, (_, i) => ({
+    nome: `Contato ${i + 1}`,
+    telefone: `(11) 99999-00${i.toString().padStart(2, '0')}`,
+    email: `contato${i + 1}@email.com`,
+    imagem: 'usuario.png'
+  }));
+  
+  // Seleção de elementos
+  const contactList = document.getElementById('contactList');
+  const paginationNumbers = document.getElementById('paginationNumbers');
+  const currentCount = document.getElementById('currentCount');
+  const totalCount = document.getElementById('totalCount');
+  const prevPage = document.getElementById('prevPage');
+  const nextPage = document.getElementById('nextPage');
+  
+  // Configurações de paginação
+  const itemsPerPage = 6;
+  let currentPage = 1;
+  let totalPages = Math.ceil(contacts.length / itemsPerPage);
+  
+  // Renderiza os contatos
+  function renderContacts() {
+    contactList.innerHTML = '';
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageContacts = contacts.slice(start, end);
+  
+    pageContacts.forEach(contact => {
+      const card = document.createElement('div');
+      card.className = 'contact-card';
+      card.innerHTML = `
+        <img src="${contact.imagem}" alt="${contact.nome}" class="contact-img">
+        <h3>${contact.nome}</h3>
+        <p><img src="phone.png" alt="">${contact.telefone}</p>
+        <p><img src="email.png" alt="">${contact.email}</p>
+      `;
+      contactList.appendChild(card);
     });
-
-    // Função para editar um contato
-    function editarContato(id) {
-        const nome = prompt("Digite o novo nome:");
-        const sobrenome = prompt("Digite o novo sobrenome:");
-        const numero = prompt("Digite o novo número:");
-        const email = prompt("Digite o novo e-mail:");
-
-        fetch(`http://localhost:3000/contatos/${id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ nome, sobrenome, numero, email })
-        })
-        .then(response => response.json())
-        .then(() => carregarContatos())
-        .catch(error => console.error("Erro ao editar contato:", error));
+  
+    currentCount.textContent = currentPage;
+    totalCount.textContent = totalPages;
+  }
+  
+  // Renderiza botões da paginação
+  function renderPagination() {
+    paginationNumbers.innerHTML = '';
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement('button');
+      btn.textContent = i;
+      btn.className = 'page-number';
+      if (i === currentPage) btn.classList.add('active');
+  
+      btn.addEventListener('click', () => {
+        currentPage = i;
+        updatePage();
+      });
+  
+      paginationNumbers.appendChild(btn);
     }
-
-    // Função para excluir um contato
-    function excluirContato(id) {
-        if (confirm("Tem certeza que deseja excluir este contato?")) {
-            fetch(`http://localhost:3000/contatos/${id}`, {
-                method: "DELETE"
-            })
-            .then(() => carregarContatos())
-            .catch(error => console.error("Erro ao excluir contato:", error));
-        }
+  }
+  
+  // Atualiza a tela
+  function updatePage() {
+    renderContacts();
+    renderPagination();
+  }
+  
+  // Botão anterior
+  prevPage.addEventListener('click', () => {
+    if (currentPage > 1) {
+      currentPage--;
+      updatePage();
     }
-
-    // Carregar os contatos ao carregar a página
-    carregarContatos();
-});
+  });
+  
+  // Botão próximo
+  nextPage.addEventListener('click', () => {
+    if (currentPage < totalPages) {
+      currentPage++;
+      updatePage();
+    }
+  });
+  
+  // Busca dinâmica
+  document.getElementById('searchBar').addEventListener('input', function (e) {
+    const termo = e.target.value.toLowerCase();
+    const filtrados = contacts.filter(c =>
+      c.nome.toLowerCase().includes(termo) ||
+      c.telefone.includes(termo) ||
+      c.email.toLowerCase().includes(termo)
+    );
+  
+    totalPages = Math.ceil(filtrados.length / itemsPerPage);
+    currentPage = 1;
+  
+    renderContactsFromList(filtrados);
+    renderPaginationFromList(filtrados);
+  });
+  
+  // Renderiza contatos filtrados
+  function renderContactsFromList(lista) {
+    contactList.innerHTML = '';
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageContacts = lista.slice(start, end);
+  
+    pageContacts.forEach(contact => {
+      const card = document.createElement('div');
+      card.className = 'contact-card';
+      card.innerHTML = `
+        <img src="${contact.imagem}" alt="${contact.nome}" class="contact-img">
+        <h3>${contact.nome}</h3>
+        <p><img src="phone.png" alt="">${contact.telefone}</p>
+        <p><img src="email.png" alt="">${contact.email}</p>
+      `;
+      contactList.appendChild(card);
+    });
+  
+    currentCount.textContent = currentPage;
+    totalCount.textContent = totalPages;
+  }
+  
+  // Renderiza paginação filtrada
+  function renderPaginationFromList(lista) {
+    paginationNumbers.innerHTML = '';
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement('button');
+      btn.textContent = i;
+      btn.className = 'page-number';
+      if (i === currentPage) btn.classList.add('active');
+  
+      btn.addEventListener('click', () => {
+        currentPage = i;
+        renderContactsFromList(lista);
+        renderPaginationFromList(lista);
+      });
+  
+      paginationNumbers.appendChild(btn);
+    }
+  }
+  
+  // Primeira renderização
+  updatePage();
+  
