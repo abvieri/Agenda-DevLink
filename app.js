@@ -1,6 +1,6 @@
 const express = require('express');
 const getConnection = require('./db'); // Importando a função correta
-const bcrypt = require('bcrypt'); // Para criptografar senhas
+const bcrypt = require('bcryptjs'); // Para criptografar senhas
 const app = express();
 const port = 3000;
 
