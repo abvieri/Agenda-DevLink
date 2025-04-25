@@ -1,21 +1,25 @@
 const express = require('express');
 const getConnection = require('./db'); // Importando a função correta
-const bcrypt = require('bcryptjs'); // Para criptografar senhas
 const app = express();
 const port = 3000;
 
-// Middleware para parsear o corpo das requisições (JSON)
+// Middleware para ler dados do body
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 const cors = require('cors');
 app.use(cors());
 
-// Expressão regular para validar email
+const path = require('path');
 const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 
 // Rota para registrar novo usuário (Cadastro)
 app.post('/register', async (req, res) => {
-  const { email, senha } = req.body;
+  const { nome, email, senha } = req.body;
+
+  if (!nome || !email || !senha) {
+    return res.status(400).json({ message: 'Preencha nome de usuário, email e senha.' });
+  }
 
   if (!emailRegex.test(email)) {
     return res.status(400).json({ message: 'Email inválido.' });
@@ -23,27 +27,29 @@ app.post('/register', async (req, res) => {
 
   try {
     const connection = await getConnection();
-    
-    // Verifica se o email já existe
+
     const [existingUser] = await connection.execute(
       'SELECT * FROM usuarios WHERE email = ?',
       [email]
     );
 
     if (existingUser.length > 0) {
-      return res.status(400).json({ message: 'Email já cadastrado.' });
+      return res.status(409).json({ message: 'Email já cadastrado.' });
     }
 
-    const hashedPassword = await bcrypt.hash(senha, 10);
-
+    // Senha salva sem hash
     const [result] = await connection.execute(
-      'INSERT INTO usuarios (email, senha) VALUES (?, ?)',
-      [email, hashedPassword]
+      'INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)',
+      [nome, email, senha]
     );
 
-    res.status(201).json({ id: result.insertId, email });
+    res.status(201).json({ message: 'Usuário cadastrado com sucesso', id: result.insertId });
+    // Redireciona para o index.html
+    res.redirect('/');
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao registrar usuário', error: err });
+    res.status(500).json({ message: 'Erro ao registrar usuário', error: err.message });
+    // Redireciona para o index.html
+    res.redirect('/cadastrar.html');
   }
 });
 
@@ -60,26 +66,28 @@ app.post('/login', async (req, res) => {
     );
 
     if (users.length === 0) {
-      return res.status(401).json({ message: 'Usuário não encontrado.' });
+      return res.status(401).send('Usuário não encontrado.');
     }
 
     const usuario = users[0];
 
-    const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
-
-    if (!senhaCorreta) {
-      return res.status(401).json({ message: 'Senha incorreta.' });
+    // Verificação direta de senha (sem hash)
+    if (senha !== usuario.senha) {
+      return res.status(401).send('Senha incorreta.');
     }
 
-    res.status(200).json({ message: 'Login bem-sucedido', usuario: { id: usuario.id, email: usuario.email } });
+    // Redireciona para o index.html
+    res.redirect('/');
   } catch (err) {
-    res.status(500).json({ message: 'Erro no login', error: err });
+    res.status(500).send('Erro no login: ' + err.message);
+    res.redirect('/cadastrar.html');
   }
 });
 
+
 // Rota para criar um novo contato
 app.post('/contatos', async (req, res) => {
-  const { nome, sobrenome, numero, endereco, email, marcador} = req.body;
+  const { nome, sobrenome, numero, endereco, email, marcador } = req.body;
 
   if (!emailRegex.test(email)) {
     return res.status(400).json({ message: 'Email inválido.' });
@@ -91,9 +99,9 @@ app.post('/contatos', async (req, res) => {
       'INSERT INTO contatos (nome, sobrenome, numero, endereco, email, marcador) VALUES (?, ?, ?, ?, ?, ?)',
       [nome, sobrenome, numero, endereco, email, marcador]
     );
-    res.status(201).json({ id: result.insertId, nome, sobrenome, numero, endereco, email, marcador});
+    res.status(201).json({ id: result.insertId, nome, sobrenome, numero, endereco, email, marcador });
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao criar contato', error: err });
+    res.status(500).json({ message: 'Erro ao criar contato', error: err.message });
   }
 });
 
@@ -123,7 +131,7 @@ app.get('/contatos', async (req, res) => {
         params.push(`%${email}%`);
       }
       if (marcador) {
-        query += ' AND marcador LIKE = ?';
+        query += ' AND marcador = ?';
         params.push(marcador);
       }
     }
@@ -131,7 +139,7 @@ app.get('/contatos', async (req, res) => {
     const [rows] = await connection.execute(query, params);
     res.status(200).json(rows);
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao listar contatos', error: err });
+    res.status(500).json({ message: 'Erro ao listar contatos', error: err.message });
   }
 });
 
@@ -148,9 +156,9 @@ app.get('/contatos/:id', async (req, res) => {
       return res.status(404).json({ message: 'Contato não encontrado' });
     }
 
-    res.status(200).json(rows[0]); // Retorna apenas o contato com o ID correspondente
+    res.status(200).json(rows[0]);
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao buscar o contato', error: err });
+    res.status(500).json({ message: 'Erro ao buscar o contato', error: err.message });
   }
 });
 
@@ -169,36 +177,32 @@ app.delete('/contatos/:id', async (req, res) => {
 
     res.status(200).json({ message: 'Contato excluído com sucesso' });
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao excluir o contato', error: err });
+    res.status(500).json({ message: 'Erro ao excluir o contato', error: err.message });
   }
 });
 
 // Rota para editar um contato
 app.put('/contatos/:id', async (req, res) => {
   const id = req.params.id;
-  const { nome, sobrenome, numero, endereco, email, marcador} = req.body;
+  const { nome, sobrenome, numero, endereco, email, marcador } = req.body;
 
   try {
-      const connection = await getConnection();
+    const connection = await getConnection();
 
-      const query = 'UPDATE contatos SET nome = ?, sobrenome = ?, numero = ?, endereco = ?, email = ?, marcador = ? WHERE id = ?';
-      const params = [nome, sobrenome, numero, endereco, email, marcador, id];
+    const query = 'UPDATE contatos SET nome = ?, sobrenome = ?, numero = ?, endereco = ?, email = ?, marcador = ? WHERE id = ?';
+    const params = [nome, sobrenome, numero, endereco, email, marcador, id];
 
-      const [result] = await connection.execute(query, params);
+    const [result] = await connection.execute(query, params);
 
-      if (result.affectedRows > 0) {
-          res.status(200).json({ message: 'Contato atualizado com sucesso' });
-      } else {
-          res.status(404).json({ message: 'Contato não encontrado' });
-      }
+    if (result.affectedRows > 0) {
+      res.status(200).json({ message: 'Contato atualizado com sucesso' });
+    } else {
+      res.status(404).json({ message: 'Contato não encontrado' });
+    }
   } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: 'Erro ao editar contato', error: err });
+    res.status(500).json({ message: 'Erro ao editar contato', error: err.message });
   }
 });
-
-const path = require('path');
-const { log } = require('console');
 
 // Servir arquivos estáticos da pasta agenda-frontend
 app.use(express.static(path.join(__dirname, 'agenda-frontend')));

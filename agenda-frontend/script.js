@@ -204,8 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
-
-
+    
     // Carregar os contatos ao carregar a página
     // Exibir todos os contatos ao carregar a página
     carregarContatos();
