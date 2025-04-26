@@ -55,11 +55,11 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Erro ao carregar contatos:", error));
     }
 
-    
+
     // Função para adicionar contato
     form.addEventListener("submit", function (e) {
         e.preventDefault();
-    
+
         const nome = document.getElementById("nome").value;
         const sobrenome = document.getElementById("sobrenome").value;
         const numero = document.getElementById("numero").value;
@@ -67,14 +67,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const endereco = document.getElementById("inputEndereço").value;
         const marcador = document.getElementById("inputMarcador").value;
         const id = document.getElementById("contatoId").value;
-    
+
         if (!nome || !numero || !email) {
             alert("Os campos Nome, Telefone e E-mail são obrigatórios.");
             return;
         }
-    
+
         const contatoData = { nome, sobrenome, numero, endereco, email, marcador }; // ✅ Agora completo
-    
+
         if (id) {
             fetch(`${dbContatos}/${id}`, {
                 method: "PUT",
@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    
+
     // Função para editar um contato
     function editarContato(id) {
         // Requisição para pegar os dados do contato
@@ -204,7 +204,13 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
-    
+
+    // Logout, por exemplo, ao clicar em um botão
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+        await fetch('/logout', { method: 'POST' });
+        window.location.href = '/login.html';
+    });
+
     // Carregar os contatos ao carregar a página
     // Exibir todos os contatos ao carregar a página
     carregarContatos();

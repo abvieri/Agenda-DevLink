@@ -84,6 +84,14 @@ app.post('/login', async (req, res) => {
   }
 });
 
+app.post('/logout', (req, res) => {
+  req.session.destroy(err => {
+    if (err) return res.status(500).send('Erro ao fazer logout');
+    res.clearCookie('connect.sid'); // limpa cookie da sessão
+    res.status(200).send('Logout feito com sucesso');
+  });
+});
+
 
 // Rota para criar um novo contato
 app.post('/contatos', async (req, res) => {
