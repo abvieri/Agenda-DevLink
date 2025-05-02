@@ -392,6 +392,23 @@ details[open] ul {
     color: red!important;
 }
 
+#tela_computador{
+    display: contents;
+}
+#tela_celular{
+    display: none;
+}
+
+/* CSS media query */
+@media (max-width: 600px) {
+    #tela_computador{
+        display: none;
+    }
+    #tela_celular{
+        display: contents;
+    }
+}
+
 :root {
     --Roxo: #7451a5;
     --Lilas: #a796fc;

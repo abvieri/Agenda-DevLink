@@ -212,6 +212,15 @@ app.put('/contatos/:id', async (req, res) => {
   }
 });
 
+//Rota para retornar o usuário logado, aplicar no app.js
+app.get('/me', async (req, res) => {
+  if (!req.session) {
+    return res.status(401).json({ message: 'Não autenticado' });
+  }
+  const usuario = await buscarUsuarioPorId(req.session.userId); // banco de dados
+  res.json({ usuario }); // Retorna nome, email etc.
+});
+
 // Servir arquivos estáticos da pasta agenda-frontend
 app.use(express.static(path.join(__dirname, 'agenda-frontend')));
 

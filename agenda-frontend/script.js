@@ -205,11 +205,25 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Logout, por exemplo, ao clicar em um botão
+    // Logout
     document.getElementById('logoutBtn').addEventListener('click', async () => {
+        alert('Tem certeza que quer sair?')
         await fetch('/logout', { method: 'POST' });
         window.location.href = '/login.html';
     });
+
+    //Requisição GET no javascript da página
+    fetch('/me', {
+        method: 'GET',
+        credentials: 'include'
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.usuario) {
+                //document.getElementById('perfil').textContent = `Bem-vindo, ${data.usuario.nome}`;
+                console.log(data.usuario);
+            }
+        });
 
     // Carregar os contatos ao carregar a página
     // Exibir todos os contatos ao carregar a página

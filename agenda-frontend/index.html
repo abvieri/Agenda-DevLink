@@ -14,181 +14,194 @@
 </head>
 
 <body>
-    <!-- Barra Superior -->
-    <nav class="navbar bg-body-tertiary" id="header">
-        <div class="container-fluid d-flex justify-content-between">
-            <a class="navbar-brand" href="#">
-                <img src="./img/logo.svg" alt="Logo" class="d-inline-block header-logo">
-            </a>
-            <h1 class="ps-5">Agenda Inteligente</h1>
+    <!-- Visão computador -->
+    <section id="tela_computador">
+        <!-- Barra Superior -->
+        <nav class="navbar bg-body-tertiary" id="header">
+            <div class="container-fluid d-flex justify-content-between">
+                <a class="navbar-brand" href="#">
+                    <img src="./img/logo.svg" alt="Logo" class="d-inline-block header-logo">
+                </a>
+                <h1 class="ps-5">Agenda Inteligente</h1>
 
-            <Section class="profile pe-5">
-                <img src="./img/pessoa.svg" class="profile-image" alt="Profile picture" />
-                <div class="profile-texts d-flex justify-content-center">
-                    <p>Abraão Vieri</p>
-                    <p>abraaovieri@gmail.com</p>
-                    <button id="logoutBtn">Sair</button>
-                </div>
-                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/2b0f92368e52d51e7fabb665aed5c99e80bb90a6cea898747d8c15ab8447c3b0?placeholderIfAbsent=true&apiKey=8484f7e9660d47ecb9b8823192ab8b78"
-                    class="arrow-icon" alt="Arrow icon" />
-            </Section>
-        </div>
-    </nav>
-
-    <!-- Barra de Pesquisa -->
-    <div class="align-self-center container text-center row mt-5">
-        <!-- Marcadores -->
-        <ul class="nav nav-pills d-flex justify-content-center align-items-center col-1">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                    aria-expanded="false">Favoritos</a>
-                <ul class="dropdown-menu">
-                    <li><button class="dropdown-item" onclick="filterContacts('favorites')">Favoritos</button></li>
-                    <li><button class="dropdown-item" onclick="filterContacts('work')">Trabalho</button></li>
-                    <li><button class="dropdown-item" onclick="filterContacts('college')">Faculdade</button></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><button class="dropdown-item tab-btn" onclick="filterContacts('all')">Todos</button></li>
-                </ul>
-            </li>
-        </ul>
-
-        <!-- Barra de Busca -->
-        <div class="search-container d-flex justify-content-center align-items-center col-8">
-            <div class="search-box w-100">
-                <img src="./img/LUPA.svg" alt="Ícone de lupa" class="search-icon">
-                <input type="text" id="search" placeholder="Pesquisar contatos" oninput="searchContacts()"
-                    class="search-bar w-100">
+                <Section class="profile pe-5">
+                    <img src="./img/pessoa.svg" class="profile-image" alt="Profile picture" />
+                    <div class="profile-texts d-flex justify-content-center">
+                        <p>Abraão Vieri</p>
+                        <p>abraaovieri@gmail.com</p>
+                        <button id="logoutBtn">Sair</button>
+                    </div>
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/2b0f92368e52d51e7fabb665aed5c99e80bb90a6cea898747d8c15ab8447c3b0?placeholderIfAbsent=true&apiKey=8484f7e9660d47ecb9b8823192ab8b78"
+                        class="arrow-icon" alt="Arrow icon" />
+                </Section>
             </div>
-        </div>
+        </nav>
 
-        <Section class="d-flex d-flex justify-content-center align-items-center flex-direction-row col-3">
-            <!-- Display em cartões -->
-            <button class="organizacao" id="grid">
-                <svg xmlns="http://www.w3.org/2000/svg" height="25" viewBox="0 0 25 24" fill="none">
-                    <path d="M3.5 9.75H21.5V14.25H3.5V9.75Z" fill="#C2C2C2" />
-                    <path
-                        d="M3.5 19.5C3.5 19.8978 3.65804 20.2794 3.93934 20.5607C4.22064 20.842 4.60218 21 5 21H20C20.3978 21 20.7794 20.842 21.0607 20.5607C21.342 20.2794 21.5 19.8978 21.5 19.5V15.75H3.5V19.5Z"
-                        fill="#C2C2C2" />
-                    <path
-                        d="M20 3H5C4.60218 3 4.22064 3.15804 3.93934 3.43934C3.65804 3.72064 3.5 4.10218 3.5 4.5V8.25H21.5V4.5C21.5 4.10218 21.342 3.72064 21.0607 3.43934C20.7794 3.15804 20.3978 3 20 3Z"
-                        fill="#C2C2C2" />
-                </svg>
-            </button>
+        <!-- Barra de Pesquisa -->
+        <div class="align-self-center container text-center row mt-5">
+            <!-- Marcadores -->
+            <ul class="nav nav-pills d-flex justify-content-center align-items-center col-1">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                        aria-expanded="false">Favoritos</a>
+                    <ul class="dropdown-menu">
+                        <li><button class="dropdown-item" onclick="filterContacts('favorites')">Favoritos</button></li>
+                        <li><button class="dropdown-item" onclick="filterContacts('work')">Trabalho</button></li>
+                        <li><button class="dropdown-item" onclick="filterContacts('college')">Faculdade</button></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><button class="dropdown-item tab-btn" onclick="filterContacts('all')">Todos</button></li>
+                    </ul>
+                </li>
+            </ul>
 
-            <!-- Display em colunas -->
-            <button class="organizacao" id="column">
-                <svg xmlns="http://www.w3.org/2000/svg" height="25" viewBox="0 0 21 20" fill="none">
-                    <path
-                        d="M6.5 0H3.5C1.84315 0 0.5 1.34315 0.5 3V6C0.5 7.65685 1.84315 9 3.5 9H6.5C8.15685 9 9.5 7.65685 9.5 6V3C9.5 1.34315 8.15685 0 6.5 0Z"
-                        fill="#7451A5" />
-                    <path
-                        d="M17.5 0H14.5C12.8431 0 11.5 1.34315 11.5 3V6C11.5 7.65685 12.8431 9 14.5 9H17.5C19.1569 9 20.5 7.65685 20.5 6V3C20.5 1.34315 19.1569 0 17.5 0Z"
-                        fill="#7451A5" />
-                    <path
-                        d="M6.5 11H3.5C1.84315 11 0.5 12.3431 0.5 14V17C0.5 18.6569 1.84315 20 3.5 20H6.5C8.15685 20 9.5 18.6569 9.5 17V14C9.5 12.3431 8.15685 11 6.5 11Z"
-                        fill="#7451A5" />
-                    <path
-                        d="M17.5 11H14.5C12.8431 11 11.5 12.3431 11.5 14V17C11.5 18.6569 12.8431 20 14.5 20H17.5C19.1569 20 20.5 18.6569 20.5 17V14C20.5 12.3431 19.1569 11 17.5 11Z"
-                        fill="#7451A5" />
-                </svg>
-            </button>
-
-            <!-- Adicionar Contato -->
-            <button class="contact-button" role="button" data-bs-toggle="modal" data-bs-target="#NovoContatoModal">
-                <div class="d-flex justify-content-center align-items-center">
-                    <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                        class="contact-icon">
-                        <path
-                            d="M13.6573 13.328H8.3173C6.77166 13.3299 5.28985 13.9447 4.19692 15.0376C3.10398 16.1306 2.48916 17.6124 2.4873 19.158V20.938C2.4873 21.0706 2.53998 21.1978 2.63375 21.2916C2.72752 21.3853 2.8547 21.438 2.9873 21.438H18.9873C19.1199 21.438 19.2471 21.3853 19.3409 21.2916C19.4346 21.1978 19.4873 21.0706 19.4873 20.938V19.158C19.4857 17.6123 18.871 16.1303 17.778 15.0373C16.685 13.9443 15.203 13.3296 13.6573 13.328Z"
-                            fill="white"></path>
-                        <path
-                            d="M10.9873 11.438C13.4726 11.438 15.4873 9.42327 15.4873 6.93799C15.4873 4.45271 13.4726 2.43799 10.9873 2.43799C8.50202 2.43799 6.4873 4.45271 6.4873 6.93799C6.4873 9.42327 8.50202 11.438 10.9873 11.438Z"
-                            fill="white"></path>
-                        <path
-                            d="M21.5 10H20V8.5C20 8.23478 19.8946 7.98043 19.7071 7.79289C19.5196 7.60536 19.2652 7.5 19 7.5C18.7348 7.5 18.4804 7.60536 18.2929 7.79289C18.1054 7.98043 18 8.23478 18 8.5V10H16.5C16.2348 10 15.9804 10.1054 15.7929 10.2929C15.6054 10.4804 15.5 10.7348 15.5 11C15.5 11.2652 15.6054 11.5196 15.7929 11.7071C15.9804 11.8946 16.2348 12 16.5 12H18V13.5C18 13.7652 18.1054 14.0196 18.2929 14.2071C18.4804 14.3946 18.7348 14.5 19 14.5C19.2652 14.5 19.5196 14.3946 19.7071 14.2071C19.8946 14.0196 20 13.7652 20 13.5V12H21.5C21.7652 12 22.0196 11.8946 22.2071 11.7071C22.3946 11.5196 22.5 11.2652 22.5 11C22.5 10.7348 22.3946 10.4804 22.2071 10.2929C22.0196 10.1054 21.7652 10 21.5 10Z"
-                            fill="white"></path>
-                    </svg>
+            <!-- Barra de Busca -->
+            <div class="search-container d-flex justify-content-center align-items-center col-8">
+                <div class="search-box w-100">
+                    <img src="./img/LUPA.svg" alt="Ícone de lupa" class="search-icon">
+                    <input type="text" id="search" placeholder="Pesquisar contatos" oninput="searchContacts()"
+                        class="search-bar w-100">
                 </div>
-                <span class="button-text d-flex justify-content-center align-items-center">Novo Contato</span>
-            </button>
-        </section>
+            </div>
 
-        <!-- Modal criar contato-->
-        <div class="modal fade" id="NovoContatoModal" tabindex="-1" aria-labelledby="NovoContatoModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content">
-                    <h1 class="mt-4">Cadastrar</h1>
-                    <span>* Indicam campos obrigatórios</span>
-                    <div class="modal-body">
-                        <form class="row g-4" id="form-contato">
-                            <input type="hidden" id="contatoId" name="contatoId">
-                          
-                            <div class="col-md-4">
-                              <input type="text" class="form-control" id="nome" name="nome" placeholder="* Nome">
-                            </div>
-                            <div class="col-md-4">
-                              <input type="text" class="form-control" id="sobrenome" name="sobrenome" placeholder="* Sobrenome">
-                            </div>
-                            <div class="col-8">
-                              <input type="text" class="form-control" id="inputEndereço" name="endereco" placeholder="Endereço">
-                            </div>
-                            <div class="col-md-8">
-                              <input type="email" class="form-control" id="email" name="email" placeholder="E-mail">
-                            </div>
-                            <div class="col-md-8">
-                              <input type="number" class="form-control" id="numero" name="numero" placeholder="* Telefone">
-                            </div>
-                            <div class="col-md-8">
-                              <input id="inputMarcador" name="marcador" class="form-select" placeholder="Marcadores">
-                            </div>
-                            <div class="col-8 d-flex f-center justify-content-center">
-                              <button type="submit" class="btn">Cadastrar</button>
-                            </div>
-                          </form>
-                          
-                        
+            <Section class="d-flex d-flex justify-content-center align-items-center flex-direction-row col-3">
+                <!-- Display em cartões -->
+                <button class="organizacao" id="grid">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="25" viewBox="0 0 25 24" fill="none">
+                        <path d="M3.5 9.75H21.5V14.25H3.5V9.75Z" fill="#C2C2C2" />
+                        <path
+                            d="M3.5 19.5C3.5 19.8978 3.65804 20.2794 3.93934 20.5607C4.22064 20.842 4.60218 21 5 21H20C20.3978 21 20.7794 20.842 21.0607 20.5607C21.342 20.2794 21.5 19.8978 21.5 19.5V15.75H3.5V19.5Z"
+                            fill="#C2C2C2" />
+                        <path
+                            d="M20 3H5C4.60218 3 4.22064 3.15804 3.93934 3.43934C3.65804 3.72064 3.5 4.10218 3.5 4.5V8.25H21.5V4.5C21.5 4.10218 21.342 3.72064 21.0607 3.43934C20.7794 3.15804 20.3978 3 20 3Z"
+                            fill="#C2C2C2" />
+                    </svg>
+                </button>
+
+                <!-- Display em colunas -->
+                <button class="organizacao" id="column">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="25" viewBox="0 0 21 20" fill="none">
+                        <path
+                            d="M6.5 0H3.5C1.84315 0 0.5 1.34315 0.5 3V6C0.5 7.65685 1.84315 9 3.5 9H6.5C8.15685 9 9.5 7.65685 9.5 6V3C9.5 1.34315 8.15685 0 6.5 0Z"
+                            fill="#7451A5" />
+                        <path
+                            d="M17.5 0H14.5C12.8431 0 11.5 1.34315 11.5 3V6C11.5 7.65685 12.8431 9 14.5 9H17.5C19.1569 9 20.5 7.65685 20.5 6V3C20.5 1.34315 19.1569 0 17.5 0Z"
+                            fill="#7451A5" />
+                        <path
+                            d="M6.5 11H3.5C1.84315 11 0.5 12.3431 0.5 14V17C0.5 18.6569 1.84315 20 3.5 20H6.5C8.15685 20 9.5 18.6569 9.5 17V14C9.5 12.3431 8.15685 11 6.5 11Z"
+                            fill="#7451A5" />
+                        <path
+                            d="M17.5 11H14.5C12.8431 11 11.5 12.3431 11.5 14V17C11.5 18.6569 12.8431 20 14.5 20H17.5C19.1569 20 20.5 18.6569 20.5 17V14C20.5 12.3431 19.1569 11 17.5 11Z"
+                            fill="#7451A5" />
+                    </svg>
+                </button>
+
+                <!-- Adicionar Contato -->
+                <button class="contact-button" role="button" data-bs-toggle="modal" data-bs-target="#NovoContatoModal">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            class="contact-icon">
+                            <path
+                                d="M13.6573 13.328H8.3173C6.77166 13.3299 5.28985 13.9447 4.19692 15.0376C3.10398 16.1306 2.48916 17.6124 2.4873 19.158V20.938C2.4873 21.0706 2.53998 21.1978 2.63375 21.2916C2.72752 21.3853 2.8547 21.438 2.9873 21.438H18.9873C19.1199 21.438 19.2471 21.3853 19.3409 21.2916C19.4346 21.1978 19.4873 21.0706 19.4873 20.938V19.158C19.4857 17.6123 18.871 16.1303 17.778 15.0373C16.685 13.9443 15.203 13.3296 13.6573 13.328Z"
+                                fill="white"></path>
+                            <path
+                                d="M10.9873 11.438C13.4726 11.438 15.4873 9.42327 15.4873 6.93799C15.4873 4.45271 13.4726 2.43799 10.9873 2.43799C8.50202 2.43799 6.4873 4.45271 6.4873 6.93799C6.4873 9.42327 8.50202 11.438 10.9873 11.438Z"
+                                fill="white"></path>
+                            <path
+                                d="M21.5 10H20V8.5C20 8.23478 19.8946 7.98043 19.7071 7.79289C19.5196 7.60536 19.2652 7.5 19 7.5C18.7348 7.5 18.4804 7.60536 18.2929 7.79289C18.1054 7.98043 18 8.23478 18 8.5V10H16.5C16.2348 10 15.9804 10.1054 15.7929 10.2929C15.6054 10.4804 15.5 10.7348 15.5 11C15.5 11.2652 15.6054 11.5196 15.7929 11.7071C15.9804 11.8946 16.2348 12 16.5 12H18V13.5C18 13.7652 18.1054 14.0196 18.2929 14.2071C18.4804 14.3946 18.7348 14.5 19 14.5C19.2652 14.5 19.5196 14.3946 19.7071 14.2071C19.8946 14.0196 20 13.7652 20 13.5V12H21.5C21.7652 12 22.0196 11.8946 22.2071 11.7071C22.3946 11.5196 22.5 11.2652 22.5 11C22.5 10.7348 22.3946 10.4804 22.2071 10.2929C22.0196 10.1054 21.7652 10 21.5 10Z"
+                                fill="white"></path>
+                        </svg>
+                    </div>
+                    <span class="button-text d-flex justify-content-center align-items-center">Novo Contato</span>
+                </button>
+            </section>
+
+            <!-- Modal criar contato-->
+            <div class="modal fade" id="NovoContatoModal" tabindex="-1" aria-labelledby="NovoContatoModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <h1 class="mt-4">Cadastrar</h1>
+                        <span>* Indicam campos obrigatórios</span>
+                        <div class="modal-body">
+                            <form class="row g-4" id="form-contato">
+                                <input type="hidden" id="contatoId" name="contatoId">
+
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="nome" name="nome" placeholder="* Nome">
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="sobrenome" name="sobrenome"
+                                        placeholder="* Sobrenome">
+                                </div>
+                                <div class="col-8">
+                                    <input type="text" class="form-control" id="inputEndereço" name="endereco"
+                                        placeholder="Endereço">
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        placeholder="E-mail">
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="number" class="form-control" id="numero" name="numero"
+                                        placeholder="* Telefone">
+                                </div>
+                                <div class="col-md-8">
+                                    <input id="inputMarcador" name="marcador" class="form-select"
+                                        placeholder="Marcadores">
+                                </div>
+                                <div class="col-8 d-flex f-center justify-content-center">
+                                    <button type="submit" class="btn">Cadastrar</button>
+                                </div>
+                            </form>
+
+
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Lista de contatos -->
-    <ul class="contact-row mt-3 container" id="lista-contatos"></ul>
+        <!-- Lista de contatos -->
+        <ul class="contact-row mt-3 container" id="lista-contatos"></ul>
 
-    <!-- Rodapé -->
-    <footer class="pagination-container">
-        <div class="pagination-counter">
-            <span id="current-count" class="counter-bold">0</span>
-            <span class="counter-regular">de</span>
-            <span id="total-count" class="counter-bold">0</span>
-            <span class="counter-regular">contatos</span>
-        </div>
-        <div class="pagination-controls">
-            <button id="prev-btn" class="pagination-button prev-button" aria-label="Página anterior" disabled>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                    class="chevron-icon">
-                    <path d="M12 18L6 12L12 6" stroke="#7451A5" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round"></path>
-                    <path d="M19 18L13 12L19 6" stroke="#F6EEFF" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round"></path>
-                </svg>
-            </button>
-            <div id="pagination-numbers" class="pagination-numbers">1</div>
-            <button id="next-btn" class="pagination-button next-button" aria-label="Próxima página" disabled>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                    class="chevron-icon">
-                    <path d="M12 18L18 12L12 6" stroke="#7451A5" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round"></path>
-                    <path d="M5 18L11 12L5 6" stroke="#F6EEFF" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round"></path>
-                </svg>
-            </button>
-        </div>
-    </footer>
+        <!-- Rodapé -->
+        <footer class="pagination-container">
+            <div class="pagination-counter">
+                <span id="current-count" class="counter-bold">0</span>
+                <span class="counter-regular">de</span>
+                <span id="total-count" class="counter-bold">0</span>
+                <span class="counter-regular">contatos</span>
+            </div>
+            <div class="pagination-controls">
+                <button id="prev-btn" class="pagination-button prev-button" aria-label="Página anterior" disabled>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        class="chevron-icon">
+                        <path d="M12 18L6 12L12 6" stroke="#7451A5" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                        <path d="M19 18L13 12L19 6" stroke="#F6EEFF" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+                <div id="pagination-numbers" class="pagination-numbers">1</div>
+                <button id="next-btn" class="pagination-button next-button" aria-label="Próxima página" disabled>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        class="chevron-icon">
+                        <path d="M12 18L18 12L12 6" stroke="#7451A5" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                        <path d="M5 18L11 12L5 6" stroke="#F6EEFF" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+            </div>
+        </footer>
+    </section>
+
+    <!-- Visão Celular -->
+    <section id="tela_celular">
+        <h1>Olá</h1>
+    </section>
 
     <!-- Script externo -->
     <script src="script.js"></script>
