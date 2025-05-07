@@ -15,11 +15,12 @@
 /* Estilos gerais */
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Poppins:wght@500&display=swap");
 
-body {
+html, body {
     font-family: "Quattrocento Sans", sans-serif !important;
     font-weight: 400;
     font-style: normal;
     background-color: #F9F9F9 !important;
+    height: 100%;
     margin: 0;
     padding: 0;
     display: flex;
@@ -194,6 +195,10 @@ b {
     font-size: 18pt;
     font-weight: 700;
     width: 100%;
+}
+
+#flex-1{
+    flex: 1;
 }
 
 #lista-contatos {
@@ -423,10 +428,9 @@ details[open] ul {
 
 /* Pagination container */
 .pagination-container {
-    position: absolute;
-    bottom: 0;
     width: 100%;
     padding: 50px 30px;
+    margin-top: auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -513,6 +517,7 @@ details[open] ul {
 
 #tela_computador{
     display: contents;
+    min-height: 100vh;
 }
 #tela_celular{
     display: none;

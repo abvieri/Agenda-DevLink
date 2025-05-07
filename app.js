@@ -1,15 +1,20 @@
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
-const path = require('path');
 const getConnection = require('./db');
+const path = require('path');
 const app = express();
 const port = 3000;
 
+const contactsPerPage = 10;
+let currentPage = 1;
+let filteredContacts = [];
+
+
 // CORS configurado corretamente
 app.use(cors({
-  origin: 'http://localhost:3000', // origem do seu front-end
-  credentials: true // permite o envio de cookies
+  origin: 'http://localhost:3000',
+  credentials: true
 }));
 
 app.use(express.urlencoded({ extended: false }));
@@ -21,8 +26,8 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false, // true se estiver usando HTTPS
-    maxAge: 24 * 60 * 60 * 1000 // 1 dia
+    secure: false,
+    maxAge: 24 * 60 * 60 * 1000
   }
 }));
 
