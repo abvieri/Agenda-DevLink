@@ -1,19 +1,43 @@
 const express = require('express');
-const getConnection = require('./db'); // Importando a função correta
+const session = require('express-session');
+const cors = require('cors');
+const path = require('path');
+const getConnection = require('./db');
 const app = express();
 const port = 3000;
 
-// Middleware para ler dados do body
-app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-const cors = require('cors');
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(session({
+  secret: 'chave_secreta_segura',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false,
+    maxAge: 24 * 60 * 60 * 1000
+  }
+}));
 
-const path = require('path');
+
+// Sessão para controle de login
+// app.use(session({
+//   secret: 'chave_secreta_segura',
+//   resave: false,
+//   saveUninitialized: false,
+//   cookie: {
+//     secure: false, // Altere para true em HTTPS
+//     maxAge: 24 * 60 * 60 * 1000 // O cookie vai expirar em 1 dia
+//   }
+// }));
+
 const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 
-// Rota para registrar novo usuário (Cadastro)
+// CADASTRO
 app.post('/register', async (req, res) => {
   const { nome, email, senha } = req.body;
 
@@ -37,66 +61,59 @@ app.post('/register', async (req, res) => {
       return res.status(409).json({ message: 'Email já cadastrado.' });
     }
 
-    // Senha salva sem hash
     const [result] = await connection.execute(
       'INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)',
-      [nome, email, senha]
+      [nome, email, senha] // Adicione hash da senha futuramente
     );
 
-    res.status(201).json({ message: 'Usuário cadastrado com sucesso', id: result.insertId });
-    // Redireciona para o index.html
-    res.redirect('/');
+    res.redirect('/login.html');
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao registrar usuário', error: err.message });
-    // Redireciona para o index.html
-    res.redirect('/cadastrar.html');
+    res.redirect('/cadastro.html');
   }
 });
 
-// Rota para login de usuário
+// LOGIN
 app.post('/login', async (req, res) => {
   const { email, senha } = req.body;
 
   try {
     const connection = await getConnection();
-
     const [users] = await connection.execute(
       'SELECT * FROM usuarios WHERE email = ?',
       [email]
     );
 
-    if (users.length === 0) {
-      return res.status(401).send('Usuário não encontrado.');
-    }
+    if (users.length === 0) return res.status(401).send('Usuário não encontrado.');
 
     const usuario = users[0];
 
-    // Verificação direta de senha (sem hash)
     if (senha !== usuario.senha) {
       return res.status(401).send('Senha incorreta.');
     }
 
-    // Redireciona para o index.html
+    req.session.userId = usuario.id;
     res.redirect('/');
   } catch (err) {
-    res.status(500).send('Erro no login: ' + err.message);
-    res.redirect('/cadastrar.html');
+    res.redirect('/login.html');
   }
 });
 
+// LOGOUT
 app.post('/logout', (req, res) => {
   req.session.destroy(err => {
     if (err) return res.status(500).send('Erro ao fazer logout');
-    res.clearCookie('connect.sid'); // limpa cookie da sessão
-    res.status(200).send('Logout feito com sucesso');
+    res.clearCookie('connect.sid');
+    res.redirect('/login.html');
   });
 });
 
-
-// Rota para criar um novo contato
+// CRIAR CONTATO
 app.post('/contatos', async (req, res) => {
-  const { nome, sobrenome, numero, endereco, email, marcador } = req.body;
+  const userId = req.session.userId;
+  if (!userId) return res.status(401).json({ message: 'Não autenticado' });
 
+  const { nome, sobrenome, numero, endereco, email, marcador } = req.body;
+  
   if (!emailRegex.test(email)) {
     return res.status(400).json({ message: 'Email inválido.' });
   }
@@ -104,44 +121,44 @@ app.post('/contatos', async (req, res) => {
   try {
     const connection = await getConnection();
     const [result] = await connection.execute(
-      'INSERT INTO contatos (nome, sobrenome, numero, endereco, email, marcador) VALUES (?, ?, ?, ?, ?, ?)',
-      [nome, sobrenome, numero, endereco, email, marcador]
+      'INSERT INTO contatos (nome, sobrenome, numero, endereco, email, marcador, usuario_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [nome, sobrenome, numero, endereco, email, marcador, userId]
     );
-    res.status(201).json({ id: result.insertId, nome, sobrenome, numero, endereco, email, marcador });
+    console.log('buiacatcha!');
+    res.status(201).json({ id: result.insertId });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: 'Erro ao criar contato', error: err.message });
   }
 });
 
-// Rota para listar todos os contatos ou buscar por nome, telefone, email ou marcador
+// LISTAR CONTATOS DO USUÁRIO
 app.get('/contatos', async (req, res) => {
+  const userId = req.session.userId;
+  if (!userId) return res.status(401).json({ message: 'Não autenticado' });
+
   const { nome, numero, email, marcador } = req.query;
 
   try {
     const connection = await getConnection();
+    let query = 'SELECT * FROM contatos WHERE usuario_id = ?';
+    const params = [userId];
 
-    let query = 'SELECT * FROM contatos';
-    const params = [];
-
-    if (nome || numero || email || marcador) {
-      query += ' WHERE 1=1';
-
-      if (nome) {
-        query += ' AND nome LIKE ?';
-        params.push(`%${nome}%`);
-      }
-      if (numero) {
-        query += ' AND numero LIKE ?';
-        params.push(`%${numero}%`);
-      }
-      if (email) {
-        query += ' AND email LIKE ?';
-        params.push(`%${email}%`);
-      }
-      if (marcador) {
-        query += ' AND marcador = ?';
-        params.push(marcador);
-      }
+    if (nome) {
+      query += ' AND nome LIKE ?';
+      params.push(`%${nome}%`);
+    }
+    if (numero) {
+      query += ' AND numero LIKE ?';
+      params.push(`%${numero}%`);
+    }
+    if (email) {
+      query += ' AND email LIKE ?';
+      params.push(`%${email}%`);
+    }
+    if (marcador) {
+      query += ' AND marcador = ?';
+      params.push(marcador);
     }
 
     const [rows] = await connection.execute(query, params);
@@ -151,14 +168,19 @@ app.get('/contatos', async (req, res) => {
   }
 });
 
-// Rota para pegar um contato específico com base no ID
+// VISUALIZAR UM CONTATO
 app.get('/contatos/:id', async (req, res) => {
+  const userId = req.session.userId;
   const { id } = req.params;
+
+  if (!userId) return res.status(401).json({ message: 'Não autenticado' });
 
   try {
     const connection = await getConnection();
-    const query = 'SELECT * FROM contatos WHERE id = ?';
-    const [rows] = await connection.execute(query, [id]);
+    const [rows] = await connection.execute(
+      'SELECT * FROM contatos WHERE id = ? AND usuario_id = ?',
+      [id, userId]
+    );
 
     if (rows.length === 0) {
       return res.status(404).json({ message: 'Contato não encontrado' });
@@ -166,18 +188,49 @@ app.get('/contatos/:id', async (req, res) => {
 
     res.status(200).json(rows[0]);
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao buscar o contato', error: err.message });
+    res.status(500).json({ message: 'Erro ao buscar contato', error: err.message });
   }
 });
 
-// Rota para excluir um contato
-app.delete('/contatos/:id', async (req, res) => {
+// EDITAR CONTATO
+app.put('/contatos/:id', async (req, res) => {
+  const userId = req.session.userId;
   const { id } = req.params;
+  const { nome, sobrenome, numero, endereco, email, marcador } = req.body;
+
+  if (!userId) return res.status(401).json({ message: 'Não autenticado' });
 
   try {
     const connection = await getConnection();
-    const query = 'DELETE FROM contatos WHERE id = ?';
-    const [result] = await connection.execute(query, [id]);
+
+    const [result] = await connection.execute(
+      'UPDATE contatos SET nome = ?, sobrenome = ?, numero = ?, endereco = ?, email = ?, marcador = ? WHERE id = ? AND usuario_id = ?',
+      [nome, sobrenome, numero, endereco, email, marcador, id, userId]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Contato não encontrado' });
+    }
+
+    res.status(200).json({ message: 'Contato atualizado com sucesso' });
+  } catch (err) {
+    res.status(500).json({ message: 'Erro ao editar contato', error: err.message });
+  }
+});
+
+// DELETAR CONTATO
+app.delete('/contatos/:id', async (req, res) => {
+  const userId = req.session.userId;
+  const { id } = req.params;
+
+  if (!userId) return res.status(401).json({ message: 'Não autenticado' });
+
+  try {
+    const connection = await getConnection();
+    const [result] = await connection.execute(
+      'DELETE FROM contatos WHERE id = ? AND usuario_id = ?',
+      [id, userId]
+    );
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: 'Contato não encontrado' });
@@ -185,51 +238,34 @@ app.delete('/contatos/:id', async (req, res) => {
 
     res.status(200).json({ message: 'Contato excluído com sucesso' });
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao excluir o contato', error: err.message });
+    res.status(500).json({ message: 'Erro ao excluir contato', error: err.message });
   }
 });
 
-// Rota para editar um contato
-app.put('/contatos/:id', async (req, res) => {
-  const id = req.params.id;
-  const { nome, sobrenome, numero, endereco, email, marcador } = req.body;
+// RETORNAR USUÁRIO LOGADO
+app.get('/me', async (req, res) => {
+  const userId = req.session.userId;
+
+  if (!userId) return res.status(401).json({ message: 'Não autenticado' });
 
   try {
     const connection = await getConnection();
+    const [rows] = await connection.execute('SELECT id, nome, email FROM usuarios WHERE id = ?', [userId]);
 
-    const query = 'UPDATE contatos SET nome = ?, sobrenome = ?, numero = ?, endereco = ?, email = ?, marcador = ? WHERE id = ?';
-    const params = [nome, sobrenome, numero, endereco, email, marcador, id];
+    if (rows.length === 0) return res.status(404).json({ message: 'Usuário não encontrado' });
 
-    const [result] = await connection.execute(query, params);
-
-    if (result.affectedRows > 0) {
-      res.status(200).json({ message: 'Contato atualizado com sucesso' });
-    } else {
-      res.status(404).json({ message: 'Contato não encontrado' });
-    }
+    res.json({ usuario: rows[0] });
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao editar contato', error: err.message });
+    res.status(500).json({ message: 'Erro ao buscar usuário', error: err.message });
   }
 });
 
-//Rota para retornar o usuário logado, aplicar no app.js
-app.get('/me', async (req, res) => {
-  if (!req.session) {
-    return res.status(401).json({ message: 'Não autenticado' });
-  }
-  const usuario = await buscarUsuarioPorId(req.session.userId); // banco de dados
-  res.json({ usuario }); // Retorna nome, email etc.
-});
-
-// Servir arquivos estáticos da pasta agenda-frontend
+// FRONTEND
 app.use(express.static(path.join(__dirname, 'agenda-frontend')));
-
-// Para garantir que todas as rotas desconhecidas carreguem o index.html
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'agenda-frontend', 'index.html'));
 });
 
-// Iniciar o servidor
 app.listen(port, () => {
   console.log(`🚀 Servidor rodando na porta ${port}`);
 });

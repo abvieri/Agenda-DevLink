@@ -2,9 +2,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("form-contato");
     const listaContatos = document.getElementById("lista-contatos");
     const dbContatos = "http://localhost:3000/contatos";
-    // const dbContatos = "/contatos";
 
-    // Função para carregar os contatos da API
+    fetch('/me')
+    .then(response => response.json())
+    .then(data => {
+        const div = window.document.getElementById('user_data')
+        div.innerHTML = `
+            <p>${data.usuario.nome}</p>
+            <p>${data.usuario.email}</p>
+        `;
+    })
+    .catch(error => {
+        window.location.href = '/login.html';
+    });
+
     function carregarContatos() {
         fetch(dbContatos)
             .then(response => response.json())
@@ -15,9 +26,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     li.classList.add("col-2", "d-flex", "justify-content-center");
                     li.dataset.id = contato.id;
 
-                    // Criando o card de contato com template literals
                     li.innerHTML = `
-                        <div class="contact-card d-flex flex-column">
+                        <div class="contact-card d-flex flex-column" data-category="${contato.marcador || 'sem-marcador'}">
                             <details class="menueditcard">
                                 <summary>⋮</summary>
                                 <ul>
@@ -33,21 +43,16 @@ document.addEventListener("DOMContentLoaded", function () {
                         </div>
                     `;
 
-                    // Adicionando os eventos após inserir o HTML
-                    setTimeout(() => {
-                        li.querySelector(".edit").addEventListener("click", function (event) {
-                            event.preventDefault();
-                            const contatoId = this.getAttribute("data-id");
-                            editarContato(contatoId);
-                        });
+                    // Eventos de Editar e Deletar
+                    li.querySelector(".edit").addEventListener("click", (e) => {
+                        e.preventDefault();
+                        editarContato(contato.id);
+                    });
 
-                        li.querySelector(".delete").addEventListener("click", function (event) {
-                            event.preventDefault();
-                            const contatoId = this.getAttribute("data-id");
-                            excluirContato(contatoId);
-                        });
-                    }, 0);
-
+                    li.querySelector(".delete").addEventListener("click", (e) => {
+                        e.preventDefault();
+                        excluirContato(contato.id);
+                    });
 
                     listaContatos.appendChild(li);
                 });
@@ -55,8 +60,40 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Erro ao carregar contatos:", error));
     }
 
+    function editarContato(id) {
+        fetch(`${dbContatos}/${id}`)
+            .then(response => response.json())
+            .then(contato => {
+                document.getElementById("nome").value = contato.nome;
+                document.getElementById("sobrenome").value = contato.sobrenome;
+                document.getElementById("numero").value = contato.numero;
+                document.getElementById("email").value = contato.email;
+                document.getElementById("inputEndereço").value = contato.endereco || '';
+                document.getElementById("inputMarcador").value = contato.marcador || '';
+                document.getElementById("contatoId").value = contato.id;
+            })
+            .catch(error => console.error("Erro ao carregar dados do contato:", error));
+    }
 
-    // Função para adicionar contato
+    function excluirContato(id) {
+        if (confirm("Tem certeza que deseja excluir este contato?")) {
+            fetch(`${dbContatos}/${id}`, { method: "DELETE" })
+                .then(res => {
+                    if (res.ok) {
+                        carregarContatos();
+                    } else {
+                        return res.json().then(error => {
+                            throw new Error(error.message || "Erro ao excluir contato");
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro ao excluir contato:", error);
+                    alert(error.message);
+                });
+        }
+    }
+
     form.addEventListener("submit", function (e) {
         e.preventDefault();
 
@@ -73,133 +110,58 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        const contatoData = { nome, sobrenome, numero, endereco, email, marcador }; // ✅ Agora completo
+        const contatoData = { nome, sobrenome, numero, email, endereco, marcador };
 
-        if (id) {
-            fetch(`${dbContatos}/${id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(contatoData)
+        const fetchOptions = {
+            method: id ? "PUT" : "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(contatoData)
+        };
+
+        const url = id ? `${dbContatos}/${id}` : dbContatos;
+
+        fetch(url, fetchOptions)
+            .then(response => response.json())
+            .then(() => {
+                carregarContatos();
+                form.reset();
+                document.getElementById("contatoId").value = ""; // limpa ID
+                location.reload();
             })
-                .then(response => response.json())
-                .then(() => {
-                    carregarContatos();
-                    location.reload();
-                })
-                .catch(error => console.error("Erro ao editar contato:", error));
-        } else {
-            fetch(dbContatos, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(contatoData)
-            })
-                .then(response => response.json())
-                .then(() => {
-                    carregarContatos();
-                    form.reset();
-                    location.reload();
-                })
-                .catch(error => console.error("Erro ao adicionar contato:", error));
-        }
+            .catch(error => console.error(`Erro ao ${id ? "editar" : "adicionar"} contato:`, error));
     });
 
-
-    // Função para editar um contato
-    function editarContato(id) {
-        // Requisição para pegar os dados do contato
-        fetch(`${dbContatos}/${id}`)
-            .then(response => response.json())
-            .then(contato => {
-                // Preencher o formulário com os dados do contato
-                document.getElementById('nome').value = contato.nome;
-                document.getElementById('sobrenome').value = contato.sobrenome;
-                document.getElementById('numero').value = contato.numero;
-                document.getElementById('email').value = contato.email;
-
-                // Definir o campo oculto com o ID do contato
-                document.getElementById('contatoId').value = contato.id;
-            })
-            .catch(error => console.error('Erro ao carregar dados do contato:', error));
-    }
-
-
-    // Função para excluir um contato
-    function excluirContato(id) {
-        if (confirm("Tem certeza que deseja excluir este contato?")) {
-            fetch(`${dbContatos}/${id}`, {
-                method: "DELETE"
-            })
-                .then(response => {
-                    if (response.ok) {
-                        carregarContatos(); // Recarrega os contatos após a exclusão
-                    } else {
-                        return response.json().then(error => {
-                            throw new Error(error.message || 'Erro ao excluir o contato');
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error("Erro ao excluir contato:", error);
-                    alert(error.message);
-                });
-        }
-    }
-
-
-    // Filtrar por categorias
+    // Função de filtro por categoria
     function filterContacts(category) {
-        const contactCards = document.querySelectorAll('.contact-card');
-        contactCards.forEach(card => {
-            const contactCategory = card.getAttribute('data-category');
-            if (category === 'all' || contactCategory === category) {
-                card.style.display = 'flex';
-            } else {
-                card.style.display = 'none';
-            }
+        document.querySelectorAll(".contact-card").forEach(card => {
+            const contactCategory = card.dataset.category;
+            card.style.display = (category === "all" || contactCategory === category) ? "flex" : "none";
         });
     }
-
 
     // Função de pesquisa
-    function searchContacts() {
-        const searchTerm = document.getElementById("search").value.toLowerCase();
-        const contactCards = document.querySelectorAll('.contact-card');
-        contactCards.forEach(card => {
-            const name = card.querySelector('h3').textContent.toLowerCase();
-            const phone = card.querySelector('p').textContent.toLowerCase();
-            const email = card.querySelectorAll('p')[1].textContent.toLowerCase();
-            if (name.includes(searchTerm) || phone.includes(searchTerm) || email.includes(searchTerm)) {
-                card.style.display = 'flex';
-            } else {
-                card.style.display = 'none';
-            }
+    document.getElementById("search").addEventListener("input", function () {
+        const searchTerm = this.value.toLowerCase();
+        document.querySelectorAll(".contact-card").forEach(card => {
+            const name = card.querySelector("h3").textContent.toLowerCase();
+            const phone = card.querySelector("p").textContent.toLowerCase();
+            const email = card.querySelectorAll("p")[1].textContent.toLowerCase();
+            card.style.display = (name.includes(searchTerm) || phone.includes(searchTerm) || email.includes(searchTerm)) ? "flex" : "none";
         });
-    }
-
-
-    // Mudança de Estilo dos boiotões no Layout da Página
-    document.getElementById("grid").addEventListener("click", function () {
-        toggleFill("grid", "column");
     });
-    document.getElementById("column").addEventListener("click", function () {
-        toggleFill("column", "grid");
-    });
+
+    // Layout toggle (grid/column)
+    document.getElementById("grid").addEventListener("click", () => toggleFill("grid", "column"));
+    document.getElementById("column").addEventListener("click", () => toggleFill("column", "grid"));
     function toggleFill(activeId, inactiveId) {
-        let activePaths = document.querySelectorAll(`#${activeId} path`);
-        let inactivePaths = document.querySelectorAll(`#${inactiveId} path`);
-        activePaths.forEach(path => path.setAttribute("fill", "#7451A5"));
-        inactivePaths.forEach(path => path.setAttribute("fill", "#c2c2c2"));
+        document.querySelectorAll(`#${activeId} path`).forEach(p => p.setAttribute("fill", "#7451A5"));
+        document.querySelectorAll(`#${inactiveId} path`).forEach(p => p.setAttribute("fill", "#c2c2c2"));
     }
 
-
-    // Função para fechar as opções dos cartões
-    document.addEventListener("click", function (event) {
-        document.querySelectorAll(".menueditcard").forEach(menu => {
-            if (menu.hasAttribute("open") && !menu.contains(event.target)) {
+    // Fechar o menu suspenso dos cards
+    document.addEventListener("click", function (e) {
+        document.querySelectorAll(".menueditcard[open]").forEach(menu => {
+            if (!menu.contains(e.target)) {
                 menu.removeAttribute("open");
             }
         });
@@ -207,28 +169,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Logout
     document.getElementById('logoutBtn').addEventListener('click', async () => {
-        alert('Tem certeza que quer sair?')
-        await fetch('/logout', { method: 'POST' });
-        window.location.href = '/login.html';
+        if (confirm("Tem certeza que quer sair?")) {
+            await fetch("/logout", { method: "POST" });
+            window.location.href = "/login.html";
+        }
     });
 
-    //Requisição GET no javascript da página
-    fetch('/me', {
-        method: 'GET',
-        credentials: 'include'
-    })
-        .then(res => res.json())
-        .then(data => {
-            if (data.usuario) {
-                //document.getElementById('perfil').textContent = `Bem-vindo, ${data.usuario.nome}`;
-                console.log(data.usuario);
-            }
-        });
-
-    // Carregar os contatos ao carregar a página
-    // Exibir todos os contatos ao carregar a página
+    // Inicialização
     carregarContatos();
-    window.onload = function () {
-        filterContacts('all');
-    }
+    window.onload = () => filterContacts("all");
 });

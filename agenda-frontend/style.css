@@ -1,3 +1,17 @@
+/* === VARIÁVEIS === */
+:root {
+    --Roxo: #7451a5;
+    --Lilas: #a796fc;
+    --Azul: #151328;
+    --Preto: #0a0a0a;
+    --CinzaClaro: #f9f9f9;
+    --FontePrincipal: "Quattrocento Sans", sans-serif;
+    --FonteSecundaria: "Poppins", sans-serif;
+    --FontBase: 12pt;
+    --Padding: 15px;
+    --Radius: 10px;
+}
+
 /* Estilos gerais */
 body {
     font-family: "Quattrocento Sans", sans-serif !important;
@@ -407,13 +421,6 @@ details[open] ul {
     #tela_celular{
         display: contents;
     }
-}
-
-:root {
-    --Roxo: #7451a5;
-    --Lilas: #a796fc;
-    --Azul: #151328;
-    --Preto: #0a0a0a;
 }
 
 /* Import fonts */
