@@ -3,21 +3,25 @@ document.addEventListener("DOMContentLoaded", function () {
     const listaContatos = document.getElementById("lista-contatos");
     const dbContatos = "http://localhost:3000/contatos";
 
-    fetch('/me')
-    .then(response => response.json())
+    fetch('/me', { credentials: 'include' })
+    .then(response => {
+      if (!response.ok) throw new Error('Não autenticado');
+      return response.json();
+    })
     .then(data => {
-        const div = window.document.getElementById('user_data')
-        div.innerHTML = `
-            <p>${data.usuario.nome}</p>
-            <p>${data.usuario.email}</p>
-        `;
+      const div = document.getElementById('user_data');
+      div.innerHTML = `
+        <p>${data.usuario.nome}</p>
+        <p>${data.usuario.email}</p>
+      `;
     })
     .catch(error => {
-        window.location.href = '/login.html';
+      window.location.href = '/login.html';
     });
+  
 
     function carregarContatos() {
-        fetch(dbContatos)
+        fetch(dbContatos, { credentials: 'include' })
             .then(response => response.json())
             .then(data => {
                 listaContatos.innerHTML = "";
@@ -61,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function editarContato(id) {
-        fetch(`${dbContatos}/${id}`)
+        fetch(`${dbContatos}/${id}`, { credentials: 'include' })
             .then(response => response.json())
             .then(contato => {
                 document.getElementById("nome").value = contato.nome;
@@ -77,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function excluirContato(id) {
         if (confirm("Tem certeza que deseja excluir este contato?")) {
-            fetch(`${dbContatos}/${id}`, { method: "DELETE" })
+            fetch(`${dbContatos}/${id}`, { method: "DELETE", credentials: 'include' })
                 .then(res => {
                     if (res.ok) {
                         carregarContatos();
@@ -115,8 +119,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const fetchOptions = {
             method: id ? "PUT" : "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(contatoData)
-        };
+            body: JSON.stringify(contatoData),
+            credentials: 'include'
+        };        
 
         const url = id ? `${dbContatos}/${id}` : dbContatos;
 
@@ -170,7 +175,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Logout
     document.getElementById('logoutBtn').addEventListener('click', async () => {
         if (confirm("Tem certeza que quer sair?")) {
-            await fetch("/logout", { method: "POST" });
+            await fetch("/logout", { method: "POST", credentials: 'include' })
             window.location.href = "/login.html";
         }
     });

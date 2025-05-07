@@ -13,6 +13,8 @@
 }
 
 /* Estilos gerais */
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Poppins:wght@500&display=swap");
+
 body {
     font-family: "Quattrocento Sans", sans-serif !important;
     font-weight: 400;
@@ -406,25 +408,18 @@ details[open] ul {
     color: red!important;
 }
 
-#tela_computador{
-    display: contents;
-}
-#tela_celular{
-    display: none;
-}
-
-/* CSS media query */
-@media (max-width: 600px) {
-    #tela_computador{
-        display: none;
-    }
-    #tela_celular{
-        display: contents;
-    }
+#sair-btn{
+    width: 15px;
+    height: 15px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
 }
 
-/* Import fonts */
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Poppins:wght@500&display=swap");
+#sair-btn ul{
+    top: 15px;
+    left: -150px;
+}
 
 /* Pagination container */
 .pagination-container {
@@ -514,4 +509,21 @@ details[open] ul {
 .page-number.active {
     color: #7451a5;
     font-weight: 600;
+}
+
+#tela_computador{
+    display: contents;
+}
+#tela_celular{
+    display: none;
+}
+
+/* CSS media query */
+@media (max-width: 600px) {
+    #tela_computador{
+        display: none;
+    }
+    #tela_celular{
+        display: contents;
+    }
 }

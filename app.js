@@ -6,34 +6,25 @@ const getConnection = require('./db');
 const app = express();
 const port = 3000;
 
-app.use(cors());
+// CORS configurado corretamente
+app.use(cors({
+  origin: 'http://localhost:3000', // origem do seu front-end
+  credentials: true // permite o envio de cookies
+}));
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+// Sessão
 app.use(session({
   secret: 'chave_secreta_segura',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false,
-    maxAge: 24 * 60 * 60 * 1000
+    secure: false, // true se estiver usando HTTPS
+    maxAge: 24 * 60 * 60 * 1000 // 1 dia
   }
 }));
-
-
-// Sessão para controle de login
-// app.use(session({
-//   secret: 'chave_secreta_segura',
-//   resave: false,
-//   saveUninitialized: false,
-//   cookie: {
-//     secure: false, // Altere para true em HTTPS
-//     maxAge: 24 * 60 * 60 * 1000 // O cookie vai expirar em 1 dia
-//   }
-// }));
 
 const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 
@@ -124,10 +115,8 @@ app.post('/contatos', async (req, res) => {
       'INSERT INTO contatos (nome, sobrenome, numero, endereco, email, marcador, usuario_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
       [nome, sobrenome, numero, endereco, email, marcador, userId]
     );
-    console.log('buiacatcha!');
     res.status(201).json({ id: result.insertId });
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: 'Erro ao criar contato', error: err.message });
   }
 });
