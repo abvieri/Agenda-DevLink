@@ -7,20 +7,20 @@ document.addEventListener("DOMContentLoaded", function () {
     let allContacts = [];
 
     fetch('/me', { credentials: 'include' })
-    .then(response => {
-      if (!response.ok) throw new Error('Não autenticado');
-      return response.json();
-    })
-    .then(data => {
-      const div = document.getElementById('user_data');
-      div.innerHTML = `
+        .then(response => {
+            if (!response.ok) throw new Error('Não autenticado');
+            return response.json();
+        })
+        .then(data => {
+            const div = document.getElementById('user_data');
+            div.innerHTML = `
         <p>${data.usuario.nome}</p>
         <p>${data.usuario.email}</p>
       `;
-    })
-    .catch(error => {
-      window.location.href = '/login.html';
-    });
+        })
+        .catch(error => {
+            window.location.href = '/login.html';
+        });
 
     function carregarContatos() {
         fetch(dbContatos, { credentials: 'include' })
@@ -29,8 +29,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 allContacts = data;
                 renderContacts();
                 renderPagination(allContacts.length);
+                loadContacts(data);
             })
             .catch(error => console.error("Erro ao carregar contatos:", error));
+    }
+
+    let originalContacts = [...allContacts];
+    function loadContacts(data) {
+        allContacts = [...data];
+        originalContacts = [...allContacts];
     }
 
     function renderContacts() {
@@ -78,32 +85,32 @@ document.addEventListener("DOMContentLoaded", function () {
     function renderPagination(totalItems) {
         const pagination = document.getElementById("pagination-numbers");
         pagination.innerHTML = "";
-    
+
         const totalPages = Math.ceil(totalItems / contactsPerPage);
-    
+
         for (let i = 1; i <= totalPages; i++) {
             const btn = document.createElement("button");
             btn.textContent = i;
             btn.classList.add("page-btn");
             btn.classList.add("pagination-numbers");
             if (i === currentPage) btn.classList.add("active");
-    
+
             btn.addEventListener("click", () => {
                 currentPage = i;
                 renderContacts();
                 renderPagination(totalItems);
             });
-    
+
             pagination.appendChild(btn);
         }
-    
+
         // Atualiza os botões "prev" e "next"
         document.getElementById("prev-btn").disabled = currentPage === 1;
         document.getElementById("next-btn").disabled = currentPage === totalPages;
-    
+
         document.getElementById("current-count").textContent = Math.min(currentPage * contactsPerPage, totalItems);
         document.getElementById("total-count").textContent = totalItems;
-    }    
+    }
 
     document.getElementById("prev-btn").addEventListener("click", () => {
         if (currentPage > 1) {
@@ -112,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
             renderPagination(allContacts.length);
         }
     });
-    
+
     document.getElementById("next-btn").addEventListener("click", () => {
         const totalPages = Math.ceil(allContacts.length / contactsPerPage);
         if (currentPage < totalPages) {
@@ -120,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
             renderContacts();
             renderPagination(allContacts.length);
         }
-    });    
+    });
 
     function editarContato(id) {
         fetch(`${dbContatos}/${id}`, { credentials: 'include' })
@@ -193,18 +200,24 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error(`Erro ao ${id ? "editar" : "adicionar"} contato:`, error));
     });
 
-    document.getElementById("search").addEventListener("input", function () {
-        const searchTerm = this.value.toLowerCase();
-        const filtered = allContacts.filter(contato => {
-            return contato.nome.toLowerCase().includes(searchTerm) ||
-                   contato.numero.toLowerCase().includes(searchTerm) ||
-                   contato.email.toLowerCase().includes(searchTerm);
-        });
+    document.getElementById("search").addEventListener("input", searchContacts);
+    function searchContacts() {
+        const searchTerm = document.getElementById("search").value.toLowerCase();
+
+        if (searchTerm === "") {
+            allContacts = [...originalContacts];
+        } else {
+            allContacts = originalContacts.filter(contato => {
+                return contato.nome.toLowerCase().includes(searchTerm) ||
+                    contato.numero.toLowerCase().includes(searchTerm) ||
+                    contato.email.toLowerCase().includes(searchTerm);
+            });
+        }
+
         currentPage = 1;
-        allContacts = filtered;
         renderContacts();
-        renderPagination(filtered.length);
-    });
+        renderPagination(allContacts.length);
+    }
 
     document.getElementById("grid").addEventListener("click", () => toggleFill("grid", "column"));
     document.getElementById("column").addEventListener("click", () => toggleFill("column", "grid"));

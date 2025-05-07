@@ -142,23 +142,26 @@ app.get('/contatos', async (req, res) => {
       query += ' AND nome LIKE ?';
       params.push(`%${nome}%`);
     }
+
     if (numero) {
       query += ' AND numero LIKE ?';
       params.push(`%${numero}%`);
     }
+
     if (email) {
       query += ' AND email LIKE ?';
       params.push(`%${email}%`);
     }
+
     if (marcador) {
-      query += ' AND marcador = ?';
-      params.push(marcador);
+      query += ' AND marcador LIKE ?';
+      params.push(`%${marcador}%`);
     }
 
-    const [rows] = await connection.execute(query, params);
-    res.status(200).json(rows);
+    const [contatos] = await connection.execute(query, params);
+    res.json(contatos);
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao listar contatos', error: err.message });
+    res.status(500).json({ message: 'Erro ao carregar contatos', error: err.message });
   }
 });
 
