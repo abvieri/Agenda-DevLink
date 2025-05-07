@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("form-contato");
-    const listaContatos = document.getElementById("lista-contatos");
-    const dbContatos = "http://localhost:3000/contatos";
+    const dbContatos = "/contatos";
+    let listaContatos = document.getElementById("lista-contatos");
     const contactsPerPage = 10;
     let currentPage = 1;
     let allContacts = [];
@@ -52,21 +52,21 @@ document.addEventListener("DOMContentLoaded", function () {
             li.dataset.id = contato.id;
 
             li.innerHTML = `
-                <div class="contact-card d-flex flex-column" data-category="${contato.marcador || 'sem-marcador'}">
-                    <details class="menueditcard">
-                        <summary>⋮</summary>
-                        <ul>
-                            <li><a href="#" class="detalhes" data-bs-toggle="modal" data-bs-target="#DetalhesModal" data-id="${contato.id}">Detalhes</a></li>
-                            <li><a href="#" class="edit" data-bs-toggle="modal" data-bs-target="#NovoContatoModal" data-id="${contato.id}">Editar</a></li>
-                            <li><a href="#" class="delete" data-id="${contato.id}">Deletar</a></li>
-                        </ul>
-                    </details>
-                    <img src="./img/pessoa.svg" alt="Foto de ${contato.nome}" class="truncate contact-img">
-                    <h3 class="truncate">${contato.nome}</h3>
-                    <p class="truncate"><img src="./img/iconPhone.svg" alt="">${contato.numero}</p>
-                    <p class="truncate"><img src="./img/cartinha_email_icone.svg" alt="">${contato.email}</p>
-                </div>
-            `;
+            <div class="contact-card d-flex flex-column" data-category="${contato.marcador || 'sem-marcador'}">
+                <details class="menueditcard">
+                    <summary>⋮</summary>
+                    <ul>
+                        <li><a href="#" class="detalhes" data-bs-toggle="modal" data-bs-target="#DetalhesModal" data-id="${contato.id}">Detalhes</a></li>
+                        <li><a href="#" class="edit" data-bs-toggle="modal" data-bs-target="#NovoContatoModal" data-id="${contato.id}">Editar</a></li>
+                        <li><a href="#" class="delete" data-id="${contato.id}">Deletar</a></li>
+                    </ul>
+                </details>
+                <img src="./img/pessoa.svg" alt="Foto de ${contato.nome}" class="truncate contact-img">
+                <h3 class="truncate">${contato.nome}</h3>
+                <p class="truncate"><img src="./img/iconPhone.svg" alt="">${contato.numero}</p>
+                <p class="truncate"><img src="./img/cartinha_email_icone.svg" alt="">${contato.email}</p>
+            </div>
+        `;
 
             li.querySelector(".detalhes").addEventListener("click", (e) => {
                 e.preventDefault();
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 excluirContato(contato.id);
             });
 
-            listaContatos.appendChild(li);
+            listaContatos.appendChild(li); // Agora deve funcionar corretamente
         });
     }
 
@@ -285,14 +285,6 @@ document.addEventListener("DOMContentLoaded", function () {
         currentPage = 1;
         renderContacts();
         renderPagination(allContacts.length);
-    }
-
-    document.getElementById("grid").addEventListener("click", () => toggleFill("grid", "column"));
-    document.getElementById("column").addEventListener("click", () => toggleFill("column", "grid"));
-
-    function toggleFill(activeId, inactiveId) {
-        document.querySelectorAll(`#${activeId} path`).forEach(p => p.setAttribute("fill", "#7451A5"));
-        document.querySelectorAll(`#${inactiveId} path`).forEach(p => p.setAttribute("fill", "#c2c2c2"));
     }
 
     document.addEventListener("click", function (e) {

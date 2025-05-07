@@ -56,45 +56,14 @@
             </ul>
 
             <!-- Barra de Busca -->
-            <div class="search-container d-flex justify-content-center align-items-center col-8">
+            <div class="search-container d-flex justify-content-center align-items-center col-9">
                 <div class="search-box w-100">
                     <img src="./img/LUPA.svg" alt="Ícone de lupa" class="search-icon">
                     <input type="text" id="search" placeholder="Pesquisar contatos" class="search-bar w-100">
                 </div>
             </div>
 
-            <Section class="d-flex d-flex justify-content-center align-items-center flex-direction-row col-3">
-                <!-- Display em cartões -->
-                <button class="organizacao" id="grid">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="25" viewBox="0 0 25 24" fill="none">
-                        <path d="M3.5 9.75H21.5V14.25H3.5V9.75Z" fill="#C2C2C2" />
-                        <path
-                            d="M3.5 19.5C3.5 19.8978 3.65804 20.2794 3.93934 20.5607C4.22064 20.842 4.60218 21 5 21H20C20.3978 21 20.7794 20.842 21.0607 20.5607C21.342 20.2794 21.5 19.8978 21.5 19.5V15.75H3.5V19.5Z"
-                            fill="#C2C2C2" />
-                        <path
-                            d="M20 3H5C4.60218 3 4.22064 3.15804 3.93934 3.43934C3.65804 3.72064 3.5 4.10218 3.5 4.5V8.25H21.5V4.5C21.5 4.10218 21.342 3.72064 21.0607 3.43934C20.7794 3.15804 20.3978 3 20 3Z"
-                            fill="#C2C2C2" />
-                    </svg>
-                </button>
-
-                <!-- Display em colunas -->
-                <button class="organizacao" id="column">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="25" viewBox="0 0 21 20" fill="none">
-                        <path
-                            d="M6.5 0H3.5C1.84315 0 0.5 1.34315 0.5 3V6C0.5 7.65685 1.84315 9 3.5 9H6.5C8.15685 9 9.5 7.65685 9.5 6V3C9.5 1.34315 8.15685 0 6.5 0Z"
-                            fill="#7451A5" />
-                        <path
-                            d="M17.5 0H14.5C12.8431 0 11.5 1.34315 11.5 3V6C11.5 7.65685 12.8431 9 14.5 9H17.5C19.1569 9 20.5 7.65685 20.5 6V3C20.5 1.34315 19.1569 0 17.5 0Z"
-                            fill="#7451A5" />
-                        <path
-                            d="M6.5 11H3.5C1.84315 11 0.5 12.3431 0.5 14V17C0.5 18.6569 1.84315 20 3.5 20H6.5C8.15685 20 9.5 18.6569 9.5 17V14C9.5 12.3431 8.15685 11 6.5 11Z"
-                            fill="#7451A5" />
-                        <path
-                            d="M17.5 11H14.5C12.8431 11 11.5 12.3431 11.5 14V17C11.5 18.6569 12.8431 20 14.5 20H17.5C19.1569 20 20.5 18.6569 20.5 17V14C20.5 12.3431 19.1569 11 17.5 11Z"
-                            fill="#7451A5" />
-                    </svg>
-                </button>
-
+            <Section class="d-flex d-flex justify-content-center align-items-center flex-direction-row col-2">
                 <!-- Adicionar Contato -->
                 <button class="contact-button" role="button" data-bs-toggle="modal" data-bs-target="#NovoContatoModal">
                     <div class="d-flex justify-content-center align-items-center">
@@ -161,7 +130,8 @@
             </div>
 
             <!-- Modal Detalhes -->
-            <div class="modal fade" id="DetalhesModal" tabindex="-1" aria-labelledby="DetalhesModalLabel" aria-hidden="true">
+            <div class="modal fade" id="DetalhesModal" tabindex="-1" aria-labelledby="DetalhesModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content p-4">
                         <div class="modal-header border-0">
@@ -170,24 +140,28 @@
                         <div class="modal-body">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item"><strong>Nome:</strong> <span id="detalheNome"></span></li>
-                                <li class="list-group-item"><strong>Sobrenome:</strong> <span id="detalheSobrenome"></span></li>
-                                <li class="list-group-item"><strong>Endereço:</strong> <span id="detalheEndereco"></span></li>
+                                <li class="list-group-item"><strong>Sobrenome:</strong> <span
+                                        id="detalheSobrenome"></span></li>
+                                <li class="list-group-item"><strong>Endereço:</strong> <span
+                                        id="detalheEndereco"></span></li>
                                 <li class="list-group-item"><strong>Email:</strong> <span id="detalheEmail"></span></li>
-                                <li class="list-group-item"><strong>Telefone:</strong> <span id="detalheTelefone"></span></li>
-                                <li class="list-group-item"><strong>Marcador:</strong> <span id="detalheMarcador"></span></li>
+                                <li class="list-group-item"><strong>Telefone:</strong> <span
+                                        id="detalheTelefone"></span></li>
+                                <li class="list-group-item"><strong>Marcador:</strong> <span
+                                        id="detalheMarcador"></span></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
         </div>
 
         <!-- Lista de contatos -->
-         <div id="flex-1">
+        <div id="flex-1">
             <ul class="contact-row mt-3 container" id="lista-contatos"></ul>
-         </div>
-        
+        </div>
+
         <!-- Rodapé -->
         <footer class="pagination-container">
             <div class="pagination-counter">

@@ -201,10 +201,6 @@ b {
     flex: 1;
 }
 
-#lista-contatos {
-    list-style: none;
-}
-
 /* Estilos da imagem dentro do cartão de contato */
 .contact-img {
     width: 100px;
