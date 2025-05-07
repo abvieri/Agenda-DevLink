@@ -134,8 +134,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Ao carregar o contato para edição
     function editarContato(id) {
-        fetch(`${dbContatos}/${id}`, { credentials: 'include' })
+        fetch(`/contatos/${id}`, { credentials: 'include' })
             .then(response => response.json())
             .then(contato => {
                 document.getElementById("nome").value = contato.nome;
@@ -149,11 +150,56 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Erro ao carregar dados do contato:", error));
     }
 
+    // Submeter as alterações do contato (ao clicar no botão de salvar)
+    document.getElementById("form-contato").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        // Verifica se o campo "contatoId" está preenchido (indicando que estamos editando um contato)
+        const contatoId = document.getElementById("contatoId").value;
+
+        if (contatoId) {
+            const dados = {
+                nome: document.getElementById("nome").value,
+                sobrenome: document.getElementById("sobrenome").value,
+                numero: document.getElementById("numero").value,
+                email: document.getElementById("email").value,
+                endereco: document.getElementById("inputEndereço").value,
+                marcador: document.getElementById("inputMarcador").value,
+            };
+
+            fetch(`/contatos/${contatoId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify(dados)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === 'Contato atualizado com sucesso') {
+                        alert('Contato atualizado!');
+                        location.reload(); // Recarrega a página
+                    } else {
+                        alert('Erro: ' + data.message);
+                    }
+                })
+                .catch(err => {
+                    console.error('Erro ao atualizar contato:', err);
+                    alert('Erro interno');
+                });
+        } else {
+            // Caso não tenha "contatoId", significa que o formulário não está sendo usado para editar, então não faz nada
+            console.log("Formulário não está em modo de edição");
+        }
+    });
+
     function excluirContato(id) {
         if (confirm("Tem certeza que deseja excluir este contato?")) {
             fetch(`${dbContatos}/${id}`, { method: "DELETE", credentials: 'include' })
                 .then(res => {
                     if (res.ok) {
+                        location.reload();
                         carregarContatos();
                     } else {
                         return res.json().then(error => {
