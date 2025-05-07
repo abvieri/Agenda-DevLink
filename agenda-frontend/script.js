@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <details class="menueditcard">
                         <summary>⋮</summary>
                         <ul>
-                            <li><a href="#">Detalhes</a></li>
+                            <li><a href="#" class="detalhes" data-bs-toggle="modal" data-bs-target="#DetalhesModal" data-id="${contato.id}">Detalhes</a></li>
                             <li><a href="#" class="edit" data-bs-toggle="modal" data-bs-target="#NovoContatoModal" data-id="${contato.id}">Editar</a></li>
                             <li><a href="#" class="delete" data-id="${contato.id}">Deletar</a></li>
                         </ul>
@@ -67,6 +67,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     <p class="truncate"><img src="./img/cartinha_email_icone.svg" alt="">${contato.email}</p>
                 </div>
             `;
+
+            li.querySelector(".detalhes").addEventListener("click", (e) => {
+                e.preventDefault();
+                DetalhesContato(contato.id);
+            });
 
             li.querySelector(".edit").addEventListener("click", (e) => {
                 e.preventDefault();
@@ -161,6 +166,23 @@ document.addEventListener("DOMContentLoaded", function () {
                     alert(error.message);
                 });
         }
+    }
+
+    function DetalhesContato(id) {
+        fetch(`${dbContatos}/${id}`, { credentials: 'include' })
+            .then(response => response.json())
+            .then(contato => {
+                document.getElementById('detalheNome').textContent = contato.nome;
+                document.getElementById('detalheSobrenome').textContent = contato.sobrenome;
+                document.getElementById('detalheEndereco').textContent = contato.endereco;
+                document.getElementById('detalheEmail').textContent = contato.email;
+                document.getElementById('detalheTelefone').textContent = contato.numero;
+                document.getElementById('detalheMarcador').textContent = contato.marcador;
+            })
+            .catch(error => console.error("Erro ao carregar dados do contato:", error));
+        // Abre o modal
+        // let modal = new bootstrap.Modal(document.getElementById('DetalhesModal'));
+        // modal.show();
     }
 
     form.addEventListener("submit", function (e) {
