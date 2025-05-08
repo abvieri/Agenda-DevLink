@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("form-contato");
-    const dbContatos = "/contatos";
+    const dbContatos = "http://localhost:3000/contatos";
+    // const dbContatos = "/contatos";
     let listaContatos = document.getElementById("lista-contatos");
     const contactsPerPage = 10;
     let currentPage = 1;
@@ -12,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return response.json();
         })
         .then(data => {
+            carregarMarcadores(data.usuario.id);
             const div = document.getElementById('user_data');
             div.innerHTML = `
         <p>${data.usuario.nome}</p>
@@ -268,24 +270,25 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error(`Erro ao ${id ? "editar" : "adicionar"} contato:`, error));
     });
 
+    let marcadorSelecionado = "";
     document.getElementById("search").addEventListener("input", searchContacts);
     function searchContacts() {
         const searchTerm = document.getElementById("search").value.toLowerCase();
-
-        if (searchTerm === "") {
-            allContacts = [...originalContacts];
-        } else {
-            allContacts = originalContacts.filter(contato => {
-                return contato.nome.toLowerCase().includes(searchTerm) ||
-                    contato.numero.toLowerCase().includes(searchTerm) ||
-                    contato.email.toLowerCase().includes(searchTerm);
-            });
-        }
-
+    
+        allContacts = originalContacts.filter(contato => {
+            const nomeOk = contato.nome.toLowerCase().includes(searchTerm);
+            const numeroOk = contato.numero.toLowerCase().includes(searchTerm);
+            const emailOk = contato.email.toLowerCase().includes(searchTerm);
+    
+            const marcadorOk = !marcadorSelecionado || marcadorSelecionado === "Todos" || contato.marcador === marcadorSelecionado;
+    
+            return (nomeOk || numeroOk || emailOk) && marcadorOk;
+        });
+    
         currentPage = 1;
         renderContacts();
         renderPagination(allContacts.length);
-    }
+    }    
 
     document.addEventListener("click", function (e) {
         document.querySelectorAll(".menueditcard[open]").forEach(menu => {
@@ -302,5 +305,59 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    async function carregarMarcadores() {
+        try {
+            const response = await fetch('/marcadores');
+            const marcadores = await response.json();
+
+            const dropdown = document.getElementById('marcadoresDropdown');
+            const titulo = document.getElementById('titulo-marcadores');
+            dropdown.innerHTML = '';
+
+            const nomesUnicos = new Set();
+            marcadores.forEach(({ marcador }) => {
+                if (marcador && !nomesUnicos.has(marcador)) {
+                    nomesUnicos.add(marcador);
+
+                    const li = document.createElement('li');
+                    const button = document.createElement('button');
+                    button.className = 'dropdown-item';
+                    button.id = marcador;
+                    button.textContent = marcador;
+                    button.onclick = () => {
+                        titulo.textContent = marcador;
+                        marcadorSelecionado = marcador;
+                        searchContacts();
+                    };
+                    li.appendChild(button);
+                    dropdown.appendChild(li);
+                }
+            });
+
+            // Adiciona separador e botão "Todos"
+            if (nomesUnicos.size > 0) {
+                const divider = document.createElement('li');
+                divider.innerHTML = '<hr class="dropdown-divider">';
+                dropdown.appendChild(divider);
+            }
+
+            const liTodos = document.createElement('li');
+            const btnTodos = document.createElement('button');
+            btnTodos.className = 'dropdown-item tab-btn';
+            btnTodos.id = 'Todos';
+            btnTodos.textContent = 'Todos';
+            btnTodos.onclick = () => {
+                titulo.textContent = 'Marcadores';
+                location.reload();
+            };
+            liTodos.appendChild(btnTodos);
+            dropdown.appendChild(liTodos);
+
+        } catch (error) {
+            console.error('Erro ao carregar marcadores:', error);
+        }
+    }
+
+    carregarMarcadores();
     carregarContatos();
 });

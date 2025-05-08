@@ -6,11 +6,6 @@ const path = require('path');
 const app = express();
 const port = 3000;
 
-const contactsPerPage = 10;
-let currentPage = 1;
-let filteredContacts = [];
-
-
 // CORS configurado corretamente
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -256,6 +251,27 @@ app.get('/me', async (req, res) => {
     res.status(500).json({ message: 'Erro ao buscar usuário', error: err.message });
   }
 });
+
+// RETORNAR MARCADORES USUÁRIO
+app.get('/marcadores', async (req, res) => {
+  const userId = req.session.userId;
+  if (!userId) return res.status(401).json({ message: 'Não autenticado' });
+
+  try {
+    const connection = await getConnection();
+    
+    // Consulta SQL para pegar os valores únicos da coluna 'marcador' para o usuário logado
+    const [marcadores] = await connection.execute(
+      'SELECT DISTINCT marcador FROM contatos WHERE usuario_id = ?',
+      [userId]
+    );
+    
+    res.json(marcadores);
+  } catch (err) {
+    res.status(500).json({ message: 'Erro ao buscar marcadores', error: err.message });
+  }
+});
+
 
 // FRONTEND
 app.use(express.static(path.join(__dirname, 'agenda-frontend')));
