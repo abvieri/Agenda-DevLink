@@ -607,4 +607,9 @@ details[open] {
     .tela_celular {
         display: flex;
     }
+
+    .imglogo{
+        width: 50%;
+        height: 50%;
+    }
 }
