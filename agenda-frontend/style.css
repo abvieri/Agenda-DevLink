@@ -15,7 +15,8 @@
 /* Estilos gerais */
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Poppins:wght@500&display=swap");
 
-html, body {
+html,
+body {
     font-family: "Quattrocento Sans", sans-serif !important;
     font-weight: 400;
     font-style: normal;
@@ -136,6 +137,7 @@ b {
     font-size: 12pt;
     color: rgba(143, 143, 143, 1);
     font-weight: 400;
+    padding-right: 3rem;
     white-space: nowrap;
     text-align: right;
 }
@@ -197,7 +199,7 @@ b {
     width: 100%;
 }
 
-#flex-1{
+#flex-1 {
     flex: 1;
 }
 
@@ -362,7 +364,7 @@ summary {
     list-style: none;
     cursor: pointer;
     color: gray;
-    text-align: end!important;
+    text-align: end !important;
     padding: 0 10px 0 0;
     font-weight: 700;
     height: 0px;
@@ -406,10 +408,10 @@ details[open] ul {
 }
 
 .menueditcard .delete:hover {
-    color: red!important;
+    color: red !important;
 }
 
-#sair-btn{
+#sair-btn {
     width: 15px;
     height: 15px;
     display: flex;
@@ -417,7 +419,7 @@ details[open] ul {
     justify-content: center;
 }
 
-#sair-btn ul{
+#sair-btn ul {
     top: 15px;
     left: -150px;
 }
@@ -511,20 +513,86 @@ details[open] ul {
     font-weight: 600;
 }
 
-#tela_computador{
+.ps-5-h1{
+    padding-left: 3rem;
+}
+
+#tela_computador {
     display: contents;
     min-height: 100vh;
 }
-#tela_celular{
+
+#tela_celular {
     display: none;
 }
 
 /* CSS media query */
-@media (max-width: 600px) {
-    #tela_computador{
+@media (max-width: 1024px) {
+    .nav-pills .nav-link {
+        font-size: 10pt;
+    }
+
+    .button-text {
+        font-size: 8pt;
+    }
+
+    .contact-icon {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+    }
+
+    .search-icon {
+        width: 20px;
+        height: 15px;
+        margin-left: 8px;
+    }
+
+    .search-bar {
+        font-size: 12pt;
+    }
+
+    .ps-5 {
+        padding-left: 0px !important;
+    }
+
+    #header {
+        height: 80px;
+    }
+
+    .header-logo {
+        height: 80px;
+    }
+
+    #lista-contatos .col-2 {
+        width: 20%;
+    }
+
+    .contact-button {
+        height: 50px;
+    }
+
+    .profile-image {
+        width: 50px;
+    }
+
+    .profile {
+        gap: 10px;
+        padding-right: 1rem;
+    }
+
+    .ps-5-h1 {
+        padding-left: 0px;
+    }
+
+}
+
+@media (max-width: 800px) {
+    #tela_computador {
         display: none;
     }
-    #tela_celular{
+
+    #tela_celular {
         display: contents;
     }
 }

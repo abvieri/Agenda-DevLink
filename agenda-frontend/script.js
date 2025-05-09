@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
       `;
         })
         .catch(error => {
-            window.location.href = '/login.html';
+            window.location.href = 'http://localhost:3000//login.html';
         });
 
     function carregarContatos() {

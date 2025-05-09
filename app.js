@@ -3,6 +3,7 @@ const session = require('express-session');
 const cors = require('cors');
 const getConnection = require('./db');
 const path = require('path');
+const { log } = require('console');
 const app = express();
 const port = 3000;
 
@@ -271,7 +272,6 @@ app.get('/marcadores', async (req, res) => {
     res.status(500).json({ message: 'Erro ao buscar marcadores', error: err.message });
   }
 });
-
 
 // FRONTEND
 app.use(express.static(path.join(__dirname, 'agenda-frontend')));
