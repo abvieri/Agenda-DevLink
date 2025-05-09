@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda de Contatos</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style_mobile.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
@@ -187,8 +188,62 @@
     </section>
 
     <!-- Visão Celular -->
-    <section id="tela_celular">
-        <h1>Olá</h1>
+    <section id="tela_celular" class="section">
+        <figure class="image-pair">
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/2abf5b49c746294ac6883be73a71d3bd02402744?placeholderIfAbsent=true&apiKey=8484f7e9660d47ecb9b8823192ab8b78"
+                class="image-item" alt="First image">
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/8af29df376c881a3c023a2afb928ff8809416c61?placeholderIfAbsent=true&apiKey=8484f7e9660d47ecb9b8823192ab8b78"
+                class="image-item" alt="Second image">
+        </figure>
+
+        <!-- Barra de Busca -->
+        <div class="search-container d-flex justify-content-center align-items-center col-9">
+            <div class="search-box w-100">
+                <img src="./img/LUPA.svg" alt="Ícone de lupa" class="search-icon">
+                <input type="text" id="search" placeholder="Pesquisar contatos" class="search-bar w-100">
+            </div>
+        </div>
+
+        <!-- Lista de contatos -->
+        <div id="flex-1">
+            <ul class="contact-row mt-3 container" id="lista-contatos-lista"></ul>
+        </div>
+
+        <article class="person-card">
+            <div class="person-content">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/650ae74ea732e2f8ac406f213e3b254ddcd17031?placeholderIfAbsent=true&apiKey=8484f7e9660d47ecb9b8823192ab8b78"
+                    alt="Profile picture of Orbita" class="profile-image">
+                <div class="person-info">
+                    <h2 class="person-name">Orbita</h2>
+                    <p class="person-email">contato@orbita.com</p>
+                </div>
+            </div>
+        </article>
+
+        <!-- Rodapé -->
+        <footer class="pagination-container">
+            <div class="pagination-controls">
+                <button id="prev-btn" class="pagination-button prev-button" aria-label="Página anterior" disabled>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        class="chevron-icon">
+                        <path d="M12 18L6 12L12 6" stroke="#7451A5" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                        <path d="M19 18L13 12L19 6" stroke="#F6EEFF" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+                <div id="pagination-numbers" class="pagination-numbers">1</div>
+                <button id="next-btn" class="pagination-button next-button" aria-label="Próxima página" disabled>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        class="chevron-icon">
+                        <path d="M12 18L18 12L12 6" stroke="#7451A5" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                        <path d="M5 18L11 12L5 6" stroke="#F6EEFF" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+            </div>
+        </footer>
     </section>
 
     <!-- Script externo -->
