@@ -3,9 +3,17 @@ document.addEventListener("DOMContentLoaded", function () {
     const dbContatos = "http://localhost:3000/contatos";
     // const dbContatos = "/contatos";
     let listaContatos = document.getElementById("lista-contatos");
-    const contactsPerPage = 10;
+    let listaContatosMobile = document.getElementById("lista-contatos-lista");
+    let contactsPerPage;
     let currentPage = 1;
     let allContacts = [];
+
+    const estilo = window.getComputedStyle(document.querySelector('.tela_celular'));
+    if (estilo.display === 'flex') {
+        contactsPerPage = 100;
+    } else if (estilo.display === 'none') {
+        contactsPerPage = 10;
+    }
 
     fetch('/me', { credentials: 'include' })
         .then(response => {
@@ -23,20 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => {
             window.location.href = 'http://localhost:3000//login.html';
         });
-
-    setInterval(() => {
-        const telaCelular = document.getElementById("tela_celular");
-        const listaContatosLista = document.getElementById("lista-contatos-lista");
-
-        if (getComputedStyle(telaCelular).display === "flex" && listaContatosLista.children.length === 0) {
-            // Copia os contatos já renderizados para a outra lista
-            const contatosOriginais = document.querySelectorAll("#lista-contatos > li");
-            contatosOriginais.forEach(contato => {
-                const clone = contato.cloneNode(true);
-                listaContatosLista.appendChild(clone);
-            });
-        }
-    }, 500);
 
     function carregarContatos() {
         fetch(dbContatos, { credentials: 'include' })
@@ -56,38 +50,20 @@ document.addEventListener("DOMContentLoaded", function () {
         originalContacts = [...allContacts];
     }
 
-    let layoutAtual = null; // Para rastrear se o layout já está no formato certo
-
+    let layoutAtual = null;
     function renderContacts() {
+        listaContatosMobile.innerHTML = "";
         listaContatos.innerHTML = "";
+
         const start = (currentPage - 1) * contactsPerPage;
         const end = currentPage * contactsPerPage;
         const contatosPagina = allContacts.slice(start, end);
-
-        const isFlex = getComputedStyle(listaContatos).display === "flex";
-
-        layoutAtual = isFlex ? "flex" : "default";
 
         contatosPagina.forEach(contato => {
             const li = document.createElement("li");
             li.classList.add("col-2", "d-flex", "justify-content-center");
             li.dataset.id = contato.id;
-
-            if (isFlex) {
-                li.innerHTML = `
-                <article class="person-card">
-                    <div class="person-content">
-                        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/650ae74ea732e2f8ac406f213e3b254ddcd17031?placeholderIfAbsent=true&apiKey=8484f7e9660d47ecb9b8823192ab8b78"
-                             alt="Profile picture of ${contato.nome}" class="profile-image">
-                        <div class="person-info">
-                            <h2 class="person-name">${contato.nome}</h2>
-                            <p class="person-email">${contato.email}</p>
-                        </div>
-                    </div>
-                </article>
-            `;
-            } else {
-                li.innerHTML = `
+            li.innerHTML = `
                 <div class="contact-card d-flex flex-column" data-category="${contato.marcador || 'sem-marcador'}">
                     <details class="menueditcard">
                         <summary>⋮</summary>
@@ -104,35 +80,62 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             `;
 
-                li.querySelector(".detalhes").addEventListener("click", (e) => {
-                    e.preventDefault();
-                    DetalhesContato(contato.id);
-                });
+            li.querySelector(".detalhes").addEventListener("click", (e) => {
+                e.preventDefault();
+                DetalhesContato(contato.id);
+            });
 
-                li.querySelector(".edit").addEventListener("click", (e) => {
-                    e.preventDefault();
-                    editarContato(contato.id);
-                });
+            li.querySelector(".edit").addEventListener("click", (e) => {
+                e.preventDefault();
+                editarContato(contato.id);
+            });
 
-                li.querySelector(".delete").addEventListener("click", (e) => {
-                    e.preventDefault();
-                    excluirContato(contato.id);
-                });
-            }
+            li.querySelector(".delete").addEventListener("click", (e) => {
+                e.preventDefault();
+                excluirContato(contato.id);
+            });
 
             listaContatos.appendChild(li);
+
+            const limb = document.createElement("li");
+            limb.classList.add("person-card");
+            limb.dataset.id = contato.id;
+            limb.innerHTML = `
+                <div class="person-content">
+                    <img src="./img/pessoa.svg" alt="Profile picture of ${contato.nome}" class="profile-image">
+                    <div class="person-info">
+                        <h2 class="person-name">${contato.nome}</h2>
+                        <p class="person-email">${contato.email}</p>
+                    </div>
+                    <details class="menueditcard">
+                        <summary>⋮</summary>
+                        <ul>
+                            <li><a href="#" class="detalhes" data-bs-toggle="modal" data-bs-target="#DetalhesModal" data-id="${contato.id}">Detalhes</a></li>
+                            <li><a href="#" class="edit" data-bs-toggle="modal" data-bs-target="#NovoContatoModal" data-id="${contato.id}">Editar</a></li>
+                            <li><a href="#" class="delete" data-id="${contato.id}">Deletar</a></li>
+                        </ul>
+                    </details>
+                </div>
+            `;
+
+            limb.querySelector(".detalhes").addEventListener("click", (e) => {
+                e.preventDefault();
+                DetalhesContato(contato.id);
+            });
+
+            limb.querySelector(".edit").addEventListener("click", (e) => {
+                e.preventDefault();
+                editarContato(contato.id);
+            });
+
+            limb.querySelector(".delete").addEventListener("click", (e) => {
+                e.preventDefault();
+                excluirContato(contato.id);
+            });
+
+            listaContatosMobile.appendChild(limb);
         });
     }
-
-    // Verifica mudança de layout a cada 500ms
-    setInterval(() => {
-        const isFlex = getComputedStyle(listaContatos).display === "flex";
-        const novoLayout = isFlex ? "flex" : "default";
-
-        if (novoLayout !== layoutAtual) {
-            carregarContatos();
-        }
-    }, 500);
 
     function renderPagination(totalItems) {
         const pagination = document.getElementById("pagination-numbers");
@@ -181,7 +184,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Ao carregar o contato para edição
     function editarContato(id) {
         fetch(`/contatos/${id}`, { credentials: 'include' })
             .then(response => response.json())
@@ -273,9 +275,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById('detalheMarcador').textContent = contato.marcador;
             })
             .catch(error => console.error("Erro ao carregar dados do contato:", error));
-        // Abre o modal
-        // let modal = new bootstrap.Modal(document.getElementById('DetalhesModal'));
-        // modal.show();
     }
 
     form.addEventListener("submit", function (e) {
@@ -344,6 +343,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.getElementById('logoutBtn').addEventListener('click', async () => {
+        if (confirm("Tem certeza que quer sair?")) {
+            await fetch("/logout", { method: "POST", credentials: 'include' });
+            window.location.href = "/login.html";
+        }
+    });
+    document.getElementById('logoutBtnimg').addEventListener('click', async () => {
         if (confirm("Tem certeza que quer sair?")) {
             await fetch("/logout", { method: "POST", credentials: 'include' });
             window.location.href = "/login.html";

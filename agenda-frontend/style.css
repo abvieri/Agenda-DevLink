@@ -517,13 +517,25 @@ details[open] ul {
     padding-left: 3rem;
 }
 
-#tela_computador {
-    display: contents;
-    min-height: 100vh;
+.tela_computador {
+    display: flex;
 }
 
-#tela_celular {
+.tela_celular {
     display: none;
+}
+
+#logo_a{
+    height: 80px;
+}
+
+details[open] {
+    z-index: 9999;
+}  
+
+.navbar-toggler-perfil{
+    display: none!important;
+    margin-right: 1rem;
 }
 
 /* CSS media query */
@@ -588,11 +600,11 @@ details[open] ul {
 }
 
 @media (max-width: 800px) {
-    #tela_computador {
-        display: none;
+    .tela_computador {
+        display: none!important;
     }
 
-    #tela_celular {
-        display: contents;
+    .tela_celular {
+        display: flex;
     }
 }
