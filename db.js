@@ -4,10 +4,10 @@ const mysql = require('mysql2/promise');
 async function getConnection() {
   try {
     const connection = await mysql.createPool({
-      host: 'bbnddvnxc2azi22dbplj-mysql.services.clever-cloud.com',
-      user: 'ugq9nwc4xowcemy7',
-      password: 'bO64FEsqBx1PjZjDpLbX',
-      database: 'bbnddvnxc2azi22dbplj',
+      host: 'localhost',
+      user: 'root',
+      password: 'vierisouza',
+      database: 'agendacontatos',
       port: 3306,
       waitForConnections: true,
       connectionLimit: 5,
